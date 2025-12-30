@@ -27,9 +27,8 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight" data-testid="link-footer-logo">
-              <span className="text-primary">Skylyfe</span>
-              <span>Tech</span>
+            <Link href="/" className="flex items-center gap-2" data-testid="link-footer-logo">
+              <img src="/logo.png" alt="Skylyfe Technologies" className="h-10 w-auto" />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {site.tagline}

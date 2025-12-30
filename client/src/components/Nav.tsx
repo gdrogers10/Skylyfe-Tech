@@ -25,9 +25,8 @@ export function Nav() {
         Skip to content
       </a>
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4" aria-label="Main navigation">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight" data-testid="link-logo">
-          <span className="text-primary">Skylyfe</span>
-          <span>Tech</span>
+        <Link href="/" className="flex items-center gap-2" data-testid="link-logo">
+          <img src="/logo.png" alt="Skylyfe Technologies" className="h-10 w-auto" />
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
