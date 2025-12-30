@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { site } from "@/content/site";
-import { SiX, SiLinkedin, SiGithub } from "react-icons/si";
+import { SiInstagram, SiGithub } from "react-icons/si";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -35,24 +35,14 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4 pt-2">
               <a
-                href={site.socials.twitter}
+                href={site.socials.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Twitter"
-                data-testid="link-social-twitter"
+                aria-label="Instagram"
+                data-testid="link-social-instagram"
               >
-                <SiX className="h-5 w-5" />
-              </a>
-              <a
-                href={site.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="LinkedIn"
-                data-testid="link-social-linkedin"
-              >
-                <SiLinkedin className="h-5 w-5" />
+                <SiInstagram className="h-5 w-5" />
               </a>
               <a
                 href={site.socials.github}

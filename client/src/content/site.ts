@@ -7,9 +7,8 @@ export const site = {
   phone: "(555) 123-4567",
   address: "25 East Beaver Street, Jacksonville Florida 32206",
   socials: {
-    twitter: "https://twitter.com/skylyfetech",
-    linkedin: "https://linkedin.com/company/skylyfetech",
-    github: "https://github.com/skylyfetech",
+    instagram: "https://instagram.com/skylyfetech",
+    github: "https://github.com/orgs/Skylyfe-Inc/dashboard",
   },
   hero: {
     title: "Emerging technology services for bold brands and communities.",
