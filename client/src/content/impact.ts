@@ -7,25 +7,24 @@ export interface Metric {
 
 export const kpis: Metric[] = [
   {
-    label: "Quiz Accuracy Improvement",
-    value: "85.7%",
-    change: "+26.2 pts",
-    context: "From 59.5% baseline",
+    label: "Projects Delivered",
+    value: "50+",
+    context: "Across all service areas",
   },
   {
-    label: "Students Achieving Mastery",
-    value: "9",
-    context: "Unique students scoring 75%+",
+    label: "Client Satisfaction",
+    value: "98%",
+    context: "Based on project feedback",
   },
   {
-    label: "Training Modules Analyzed",
-    value: "3",
-    context: "Comprehensive quiz analysis",
+    label: "Technologies Mastered",
+    value: "25+",
+    context: "AI, AR, IoT, and more",
   },
   {
-    label: "Total Learning Attempts",
-    value: "27",
-    context: "Engaged learning sessions",
+    label: "Years of Experience",
+    value: "10+",
+    context: "In emerging technology",
   },
 ];
 
