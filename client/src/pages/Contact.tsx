@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { site } from "@/content/site";
 import { apiRequest } from "@/lib/queryClient";
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { Mail, MapPin, Send, CheckCircle } from "lucide-react";
 
 const contactFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -228,18 +228,6 @@ export default function Contact() {
                       >
                         {site.email}
                       </a>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="pt-6 flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Phone</div>
-                      <span className="text-muted-foreground">{site.phone}</span>
                     </div>
                   </CardContent>
                 </Card>

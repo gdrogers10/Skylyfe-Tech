@@ -103,7 +103,6 @@ export function Footer() {
                   {site.email}
                 </a>
               </li>
-              <li className="text-muted-foreground">{site.phone}</li>
               <li className="text-muted-foreground">{site.address}</li>
             </ul>
           </div>
