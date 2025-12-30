@@ -1,0 +1,143 @@
+import { Link } from "wouter";
+import { site } from "@/content/site";
+import { SiX, SiLinkedin, SiGithub } from "react-icons/si";
+
+const quickLinks = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
+];
+
+const serviceLinks = [
+  { label: "AI/ML & GenAI", href: "/services/ai-ml-genai" },
+  { label: "Spatial/AR", href: "/services/spatial-ar" },
+  { label: "3D Printing", href: "/services/3d-printing-prototyping" },
+  { label: "IoT & GPS", href: "/services/iot-gps-tracking" },
+];
+
+const legalLinks = [
+  { label: "Terms of Service", href: "/legal#terms" },
+  { label: "Privacy Policy", href: "/legal#privacy" },
+];
+
+export function Footer() {
+  return (
+    <footer className="bg-card border-t border-border">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="space-y-4">
+            <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight" data-testid="link-footer-logo">
+              <span className="text-primary">Skylyfe</span>
+              <span>Tech</span>
+            </Link>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {site.tagline}
+            </p>
+            <div className="flex items-center gap-4 pt-2">
+              <a
+                href={site.socials.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Twitter"
+                data-testid="link-social-twitter"
+              >
+                <SiX className="h-5 w-5" />
+              </a>
+              <a
+                href={site.socials.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="LinkedIn"
+                data-testid="link-social-linkedin"
+              >
+                <SiLinkedin className="h-5 w-5" />
+              </a>
+              <a
+                href={site.socials.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="GitHub"
+                data-testid="link-social-github"
+              >
+                <SiGithub className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Quick Links</h3>
+            <ul className="space-y-3">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-foreground hover:text-primary transition-colors"
+                    data-testid={`link-footer-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Services</h3>
+            <ul className="space-y-3">
+              {serviceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-foreground hover:text-primary transition-colors"
+                    data-testid={`link-footer-service-${link.label.toLowerCase().replace(/[/\s&]+/g, '-')}`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Contact</h3>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-foreground hover:text-primary transition-colors"
+                  data-testid="link-footer-email"
+                >
+                  {site.email}
+                </a>
+              </li>
+              <li className="text-muted-foreground">{site.phone}</li>
+              <li className="text-muted-foreground">{site.address}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
+            &copy; {new Date().getFullYear()} {site.fullName}. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                data-testid={`link-footer-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
