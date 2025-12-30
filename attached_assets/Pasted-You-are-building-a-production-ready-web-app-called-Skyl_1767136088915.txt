@@ -1,0 +1,135 @@
+You are building a production-ready web app called **Skylyfe Tech** for **Skylyfe Technologies LLC** (innovation arm of Skylyfe Inc). Primary goal: convert leads for emerging-technology services and auto-generate a branded Statement of Work (SOW) using the OpenAI API.
+
+## Tech Stack
+- Frontend: React + Vite + TypeScript + Tailwind CSS
+- Server: Node + Express (API: contact + SOW generation)
+- OpenAI: Responses API with JSON schema (gpt-4o-mini by default; allow upgrade to gpt-4o)
+- PDF: Puppeteer to render server-generated HTML → PDF; optional DOCX via `docx` npm
+- Content: TypeScript/JSON files in `/src/content`
+- Deploy target: Replit (use Secrets for env)
+
+## Brand & Positioning (copy)
+Skylyfe Technologies LLC helps organizations turn ideas into market-ready solutions using **AI/ML & GenAI**, **Spatial/AR**, **3D printing & rapid prototyping**, **IoT/GPS tracking**, and **e-commerce enablement**. We are the innovation arm of Skylyfe Inc, translating community mission into real products and outcomes.
+
+Tagline: **“From vision to market—tech-powered entrepreneurship.”**
+
+## Features
+1) **Services-first marketing site** (conversions)
+2) **SOW Generator**: guided, multi-step form → OpenAI creates structured SOW JSON → render HTML → download PDF (DOCX optional)
+3) **Contact + lead capture** with server endpoint + optional webhook
+4) **SEO & accessibility** best practices
+
+## Routes & Pages
+- **/** (Home): hero (value prop + two CTAs), featured services, KPI band, partner logos, testimonials, footer CTA.
+- **/services** (hub): grid of service cards with tags: AI/ML, Spatial/AR, 3D Printing, IoT/GPS, E-commerce/Shopify, Branding, Training.
+- **/services/:slug** (detail): outcomes, deliverables, timelines, tools, KPIs, starter packages (Fixed | T&M | Pilot), “Scope Your Project” CTA.
+- **/scope** (SOW Generator): multi-step form (see schema below), live preview, generate + download SOW.
+- **/work** (use cases): short case summaries (no PII), tools used, before/after, outcomes.
+- **/about**: relationship with Skylyfe Inc; veteran-led; community impact.
+- **/contact**: form posts to Express, shows success/fail; optional webhook to `CONTACT_WEBHOOK_URL`.
+- **/legal**: Terms & Privacy.
+
+## Navigation & Layout
+- Sticky, keyboard-accessible nav with focus states; footer with contact, quick links, social placeholders.
+- Components: Nav, Footer, Hero, ServiceCard, KPIBand, Testimonial, Badge, Steps, Accordion (FAQ), Table, Toast, PageHeader, ImageGrid.
+
+## Content Files (seed real copy)
+Create `/src/content/`:
+- `site.ts` — siteName “Skylyfe Tech”, tagline, socials stub
+- `services.ts` — array of service objects:
+  {
+    slug, title, subtitle, who,
+    painPoints: string[], outcomes: string[], deliverables: string[],
+    timelineOptions: string[], tools: string[], complianceNotes?: string,
+    pricingModels: ["Fixed-scope","T&M","Pilot"], ctas: { primaryText, primaryHref }
+  }
+  Include:
+  1) AI/ML & GenAI (Meshy AI, Spline/Tripo, OpenAI)
+  2) Spatial/AR (8th Wall, WebXR, Three.js)
+  3) 3D Printing & Rapid Prototyping (Blender/CAD, FLSUN)
+  4) IoT & GPS (ESP32, GPS, AWS IoT/Amplify/AppSync/DynamoDB)
+  5) E-commerce/Shopify (POD, Printful/Printify)
+  6) Branding & Visual Identity
+  7) Training & Workshops
+- `programs.ts` — EETT summary (8-week), highlights, timeline
+- `impact.ts` — KPI examples (quiz accuracy improved 59.5% → 85.7%; 9 unique students ≥75%; 3 quizzes; 27 attempts)
+- `faq.ts` — procurement, IP, data & security, accessibility (WCAG), timeline/payment
+- `partners.ts` — logo placeholders
+
+## UI & Theming
+- Colors: slate-900 (#111827) bg; blue-600 (#2563EB) accent; slate-50 surfaces; slate-300 borders; slate-800 text; white.
+- Style: rounded-2xl, soft shadows, generous spacing; Inter or system font.
+- Accessibility: WCAG AA contrast, skip-to-content, visible focus, aria labels, semantic sections.
+
+## SOW Generator (/scope)
+### Form steps (client-facing)
+1) **Contact**: name, email, org, role, phone
+2) **Project Basics**: service types (multi), project title, goals (short), audience, desired outcomes
+3) **Timeline & Budget**: preset options (2/4/8/12 weeks), budget band (e.g., <$5k, $5–15k, $15–40k, $40k+)
+4) **Tech Context**: tools of interest (AI/AR/3D/IoT/Shopify), integrations, data/security needs
+5) **Deliverables**: checklist auto-suggested by service + custom entries
+6) **Success Metrics**: checkboxes + free text (e.g., prototype delivered, AR preview live, GPS dashboard online, storefront launched)
+7) **Legal/Compliance**: IP ownership preference, confidentiality, accessibility (WCAG), data handling
+8) **Review & Generate**: preview, then “Generate SOW”
+
+### Server: OpenAI-driven SOW (Express)
+- Endpoint: `POST /api/sow`
+- Use OpenAI Responses API with JSON Schema to get structured SOW:
+  - Fields: projectTitle, client, date, summary, objectives[], scope[], deliverables[], timeline[{week,milestone}], successMetrics[], assumptions[], outOfScope[], pricingModel, pricingNotes, legal{ipOwnership,confidentiality,accessibility,dataSecurity}
+- Render returned JSON to HTML, then puppeteer to **PDF**; also return raw JSON and HTML.
+- Endpoint: `POST /api/sow/pdf` to return a file download (application/pdf).
+
+### Example SOW JSON schema (strict)
+- Implement a `SOW_SCHEMA` (as in server code) and pass via `response_format: { type: "json_schema", json_schema: SOW_SCHEMA }`.
+
+## Other API Endpoints
+- `POST /api/contact` → save or forward to `CONTACT_WEBHOOK_URL`; basic rate limit & validation.
+
+## Frontend Wiring
+- `/scope` page:
+  - Multi-step form (React + Zod or Yup for validation)
+  - “Generate SOW” → POST JSON → show HTML preview in an iframe
+  - Buttons: “Download PDF”, “Email me a copy”
+- `/services/:slug`:
+  - Render from `services.ts`, include “Start Scope” button that pre-selects that service in `/scope`.
+
+## Security & Privacy
+- Keep keys in Replit Secrets: `OPENAI_API_KEY`, `CONTACT_WEBHOOK_URL` (optional).
+- Validate inputs server-side; sanitize HTML if mirroring user fields.
+- Add basic rate limiting, CORS locked to your origin, and don’t log sensitive PII.
+- Include simple Terms & Privacy pages reflecting data handling.
+
+## SEO & Analytics
+- Meta per page, Open Graph, sitemap.xml, robots.txt
+- Schema.org (Organization, Service)
+- Optional Google Analytics via `VITE_ANALYTICS_ID`
+
+## File Structure (expected)
+- `/src/main.tsx`, `/src/App.tsx`
+- `/src/pages/{Home,Services,ServiceDetail,Scope,Work,About,Contact,Legal}.tsx`
+- `/src/components/{Nav,Footer,Hero,ServiceCard,KPIBand,Testimonial,Badge,Steps,Accordion,Toast,PageHeader,ImageGrid}.tsx`
+- `/src/content/{site.ts,services.ts,programs.ts,impact.ts,faq.ts,partners.ts}`
+- `/server/index.ts` (Express app mounting routes)
+- `/server/sow.ts` (OpenAI + HTML + PDF generation)
+- `/server/contact.ts` (contact endpoint)
+- `/server/pdf.ts` (puppeteer helper)
+- `/public/` (favicons, og image)
+- Tailwind config, ESLint, Prettier, tsconfig
+
+## Acceptance Criteria
+- Runs locally with `npm i && npm run dev`
+- Tailwind configured; consistent theme and spacing
+- All core routes resolve and render seeded content
+- `/scope` generates SOW via OpenAI; “Download PDF” works
+- `/contact` submits and returns success/fail states
+- Lighthouse: AA contrast pass; basic SEO tags present
+- Deployment instructions for Replit included (how to add Secrets & run)
+
+## Seed Copy (use now)
+- Home hero H1: “Emerging technology services for bold brands and communities.”
+- Sub: “AI/ML, Spatial/AR, 3D printing, IoT/GPS, and e-commerce—delivered with clear scopes, timelines, and outcomes.”
+- Primary CTA: “Scope Your Project” (/scope); Secondary CTA: “Explore Services” (/services)
+- KPI examples: “3 quizzes analyzed; accuracy 59.5%→85.7% (+26.2 pts). 27 attempts; 9 unique students ≥75%.”
+- Footer: “Skylyfe Technologies LLC — #Skylyfe💫 — hello@skylyfe (placeholder)”
+
+Please scaffold the full codebase, implement endpoints, seed content, and start the dev server. Provide post-run notes (how to set Replit Secrets, how to deploy, and where to change content).
