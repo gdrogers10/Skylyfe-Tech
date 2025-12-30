@@ -3,9 +3,9 @@ export const site = {
   fullName: "Skylyfe Technologies LLC",
   tagline: "From vision to market—tech-powered entrepreneurship.",
   description: "Emerging technology services for bold brands and communities.",
-  email: "hello@skylyfe.tech",
+  email: "myskylyfe@gmail.com",
   phone: "(555) 123-4567",
-  address: "Innovation District, Tech City, TC 12345",
+  address: "25 East Beaver Street, Jacksonville Florida 32206",
   socials: {
     twitter: "https://twitter.com/skylyfetech",
     linkedin: "https://linkedin.com/company/skylyfetech",
