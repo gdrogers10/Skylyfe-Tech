@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertContactSchema, sowFormSchema } from "@shared/schema";
 import { generateSow, renderSowHtml } from "./sow";
 import { generatePdf } from "./pdf";
+import { sendSOWNotification } from "./email";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -56,12 +57,21 @@ export async function registerRoutes(
 
   app.post("/api/sow/pdf", async (req: Request, res: Response) => {
     try {
-      const { html } = req.body;
+      const { html, clientName, clientEmail, projectName } = req.body;
       if (!html || typeof html !== "string") {
         return res.status(400).json({ error: "HTML content required" });
       }
 
       const pdfBuffer = await generatePdf(html);
+
+      if (clientName && clientEmail && projectName) {
+        sendSOWNotification({
+          clientName,
+          clientEmail,
+          projectName,
+          pdfBuffer,
+        }).catch(err => console.error("Email notification failed:", err));
+      }
 
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", 'attachment; filename="Statement-of-Work.pdf"');

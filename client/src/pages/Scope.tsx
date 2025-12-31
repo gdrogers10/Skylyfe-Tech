@@ -109,10 +109,16 @@ export default function Scope() {
 
   const downloadPdf = async () => {
     try {
+      const formData = form.getValues();
       const response = await fetch("/api/sow/pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ html: sowHtml }),
+        body: JSON.stringify({ 
+          html: sowHtml,
+          clientName: formData.contact.name,
+          clientEmail: formData.contact.email,
+          projectName: generatedSow?.projectTitle || formData.projectBasics.projectName,
+        }),
       });
       if (!response.ok) throw new Error("PDF generation failed");
       const blob = await response.blob();
