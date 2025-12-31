@@ -14,10 +14,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Steps } from "@/components/Steps";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
+import { isUnauthorizedError } from "@/lib/auth-utils";
 import { services } from "@/content/services";
 import { sowFormSchema, type SowFormData, type SowOutput } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { ArrowLeft, ArrowRight, FileText, Download, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn } from "lucide-react";
 
 const stepLabels = [
   { label: "Contact", description: "Your information" },
@@ -53,6 +55,7 @@ const deliverablesByService: Record<string, string[]> = {
 export default function Scope() {
   const [location] = useLocation();
   const { toast } = useToast();
+  const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [generatedSow, setGeneratedSow] = useState<SowOutput | null>(null);
   const [sowHtml, setSowHtml] = useState<string>("");
@@ -102,7 +105,12 @@ export default function Scope() {
       setSowHtml(data.html);
       toast({ title: "SOW Generated!", description: "Your Statement of Work is ready." });
     },
-    onError: () => {
+    onError: (error: Error) => {
+      if (isUnauthorizedError(error)) {
+        toast({ title: "Please log in", description: "You need to be logged in to generate a SOW.", variant: "destructive" });
+        setTimeout(() => { window.location.href = "/api/login"; }, 500);
+        return;
+      }
       toast({ title: "Generation failed", description: "Please try again.", variant: "destructive" });
     },
   });
@@ -610,6 +618,57 @@ export default function Scope() {
         return null;
     }
   };
+
+  if (authLoading) {
+    return (
+      <main id="main-content" className="bg-card min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <main id="main-content" className="bg-card min-h-screen flex items-center justify-center">
+        <Card className="max-w-md w-full mx-4">
+          <CardHeader className="text-center">
+            <FileText className="h-12 w-12 mx-auto text-primary mb-4" />
+            <h1 className="text-2xl font-semibold" data-testid="text-login-required">Sign In Required</h1>
+            <p className="text-muted-foreground mt-2">
+              Please sign in to access the SOW generator and create your custom Statement of Work.
+            </p>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Creating an account takes less than a minute and gives you access to:
+            </p>
+            <ul className="text-sm text-left space-y-2 ml-4">
+              <li className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-primary" />
+                AI-powered SOW generation
+              </li>
+              <li className="flex items-center gap-2">
+                <Download className="h-4 w-4 text-primary" />
+                PDF export for your proposals
+              </li>
+            </ul>
+            <Button
+              onClick={() => { window.location.href = "/api/login"; }}
+              className="w-full gap-2"
+              size="lg"
+              data-testid="button-login"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign In to Continue
+            </Button>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main id="main-content" className="bg-card min-h-screen">

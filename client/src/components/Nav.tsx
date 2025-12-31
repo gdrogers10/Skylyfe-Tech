@@ -1,9 +1,12 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Rocket } from "lucide-react";
+import { Menu, X, Rocket, LogIn, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/content/site";
 import logoImage from "@assets/generated_images/skylyfe_tech_modern_logo.png";
+import { useAuth } from "@/hooks/use-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { label: "Services", href: "/services" },
@@ -15,6 +18,13 @@ const navLinks = [
 export function Nav() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
+
+  const getInitials = (firstName?: string | null, lastName?: string | null) => {
+    const first = firstName?.charAt(0) || "";
+    const last = lastName?.charAt(0) || "";
+    return (first + last).toUpperCase() || "U";
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
@@ -52,6 +62,35 @@ export function Nav() {
               {site.hero.primaryCta.text}
             </Button>
           </Link>
+          {!isLoading && (
+            isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full" data-testid="button-user-menu">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || "User"} />
+                      <AvatarFallback>{getInitials(user.firstName, user.lastName)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem className="text-muted-foreground" disabled>
+                    <User className="h-4 w-4 mr-2" />
+                    {user.email || user.firstName || "User"}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => logout()} data-testid="button-logout">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button variant="outline" className="gap-2" onClick={() => { window.location.href = "/api/login"; }} data-testid="button-login">
+                <LogIn className="h-4 w-4" />
+                Sign In
+              </Button>
+            )
+          )}
         </div>
 
         <Button
@@ -89,6 +128,38 @@ export function Nav() {
                 {site.hero.primaryCta.text}
               </Button>
             </Link>
+            {!isLoading && (
+              isAuthenticated && user ? (
+                <div className="pt-3 border-t border-border mt-3">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || "User"} />
+                      <AvatarFallback>{getInitials(user.firstName, user.lastName)}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm text-muted-foreground">{user.email || user.firstName}</span>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full gap-2" 
+                    onClick={() => { setMobileMenuOpen(false); logout(); }}
+                    data-testid="button-mobile-logout"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  className="w-full mt-2 gap-2" 
+                  onClick={() => { setMobileMenuOpen(false); window.location.href = "/api/login"; }}
+                  data-testid="button-mobile-login"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Sign In
+                </Button>
+              )
+            )}
           </div>
         </div>
       )}
