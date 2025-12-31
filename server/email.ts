@@ -66,7 +66,7 @@ export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> 
     
     const result = await client.emails.send({
       from: fromEmail || 'noreply@resend.dev',
-      to: 'g.rogersky@gmail.com',
+      to: ['myskylyfe@gmail.com', 'g.rogersky@gmail.com'],
       subject: `New SOW Generated: ${data.projectName} - ${data.clientName}`,
       html: `
         <h2>New Statement of Work Generated</h2>
@@ -103,7 +103,7 @@ export async function sendContactNotification(data: ContactEmailData): Promise<b
     
     await client.emails.send({
       from: fromEmail || 'noreply@resend.dev',
-      to: 'g.rogersky@gmail.com',
+      to: ['myskylyfe@gmail.com', 'g.rogersky@gmail.com'],
       subject: `New Contact Form Submission from ${data.name}`,
       html: `
         <h2>New Contact Form Submission</h2>

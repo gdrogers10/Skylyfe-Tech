@@ -19,7 +19,7 @@ import { isUnauthorizedError } from "@/lib/auth-utils";
 import { services } from "@/content/services";
 import { sowFormSchema, type SowFormData, type SowOutput } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn, Mail, Check } from "lucide-react";
 
 const stepLabels = [
   { label: "Contact", description: "Your information" },
@@ -115,18 +115,15 @@ export default function Scope() {
     },
   });
 
+  const [emailSent, setEmailSent] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+
   const downloadPdf = async () => {
     try {
-      const formData = form.getValues();
       const response = await fetch("/api/sow/pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          html: sowHtml,
-          clientName: formData.contact.name,
-          clientEmail: formData.contact.email,
-          projectName: generatedSow?.projectTitle || formData.projectBasics.projectTitle,
-        }),
+        body: JSON.stringify({ html: sowHtml }),
       });
       if (!response.ok) throw new Error("PDF generation failed");
       const blob = await response.blob();
@@ -138,8 +135,33 @@ export default function Scope() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+      toast({ title: "PDF Downloaded", description: "Your SOW has been downloaded." });
     } catch {
       toast({ title: "Download failed", description: "Please try again.", variant: "destructive" });
+    }
+  };
+
+  const sendEmail = async () => {
+    setSendingEmail(true);
+    try {
+      const formData = form.getValues();
+      const response = await fetch("/api/sow/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          html: sowHtml,
+          clientName: formData.contact.name,
+          clientEmail: formData.contact.email,
+          projectName: generatedSow?.projectTitle || formData.projectBasics.projectTitle,
+        }),
+      });
+      if (!response.ok) throw new Error("Email send failed");
+      setEmailSent(true);
+      toast({ title: "Email Sent!", description: "The SOW has been sent to Skylyfe Technologies." });
+    } catch {
+      toast({ title: "Email failed", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setSendingEmail(false);
     }
   };
 
@@ -543,10 +565,28 @@ export default function Scope() {
                       <FileText className="h-6 w-6 text-primary" />
                       <h3 className="text-lg font-semibold">Your Statement of Work</h3>
                     </div>
-                    <Button onClick={downloadPdf} className="gap-2" data-testid="button-download-pdf">
-                      <Download className="h-4 w-4" />
-                      Download PDF
-                    </Button>
+                    <div className="flex gap-2 flex-wrap">
+                      <Button onClick={downloadPdf} className="gap-2" data-testid="button-download-pdf">
+                        <Download className="h-4 w-4" />
+                        Download PDF
+                      </Button>
+                      <Button 
+                        onClick={sendEmail} 
+                        disabled={emailSent || sendingEmail}
+                        variant={emailSent ? "secondary" : "default"}
+                        className="gap-2" 
+                        data-testid="button-send-email"
+                      >
+                        {sendingEmail ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : emailSent ? (
+                          <Check className="h-4 w-4" />
+                        ) : (
+                          <Mail className="h-4 w-4" />
+                        )}
+                        {emailSent ? "Email Sent" : sendingEmail ? "Sending..." : "Send to Skylyfe"}
+                      </Button>
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div

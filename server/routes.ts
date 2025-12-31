@@ -85,21 +85,12 @@ export async function registerRoutes(
 
   app.post("/api/sow/pdf", sowLimiter, isAuthenticated, async (req: Request, res: Response) => {
     try {
-      const { html, clientName, clientEmail, projectName } = req.body;
+      const { html } = req.body;
       if (!html || typeof html !== "string") {
         return res.status(400).json({ error: "HTML content required" });
       }
 
       const pdfBuffer = await generatePdf(html);
-
-      if (clientName && clientEmail && projectName) {
-        sendSOWNotification({
-          clientName,
-          clientEmail,
-          projectName,
-          pdfBuffer,
-        }).catch(err => console.error("Email notification failed:", err));
-      }
 
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", 'attachment; filename="Statement-of-Work.pdf"');
@@ -107,6 +98,36 @@ export async function registerRoutes(
     } catch (error) {
       console.error("PDF generation error:", error);
       res.status(500).json({ error: "Failed to generate PDF" });
+    }
+  });
+
+  app.post("/api/sow/email", sowLimiter, isAuthenticated, async (req: Request, res: Response) => {
+    try {
+      const { html, clientName, clientEmail, projectName } = req.body;
+      if (!html || typeof html !== "string") {
+        return res.status(400).json({ error: "HTML content required" });
+      }
+      if (!clientName || !clientEmail || !projectName) {
+        return res.status(400).json({ error: "Client name, email, and project name are required" });
+      }
+
+      const pdfBuffer = await generatePdf(html);
+
+      const success = await sendSOWNotification({
+        clientName,
+        clientEmail,
+        projectName,
+        pdfBuffer,
+      });
+
+      if (success) {
+        res.json({ success: true, message: "SOW email sent successfully" });
+      } else {
+        res.status(500).json({ error: "Failed to send email" });
+      }
+    } catch (error) {
+      console.error("SOW email error:", error);
+      res.status(500).json({ error: "Failed to send SOW email" });
     }
   });
 
