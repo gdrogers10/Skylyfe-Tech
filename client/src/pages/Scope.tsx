@@ -321,6 +321,10 @@ export default function Scope() {
                     <SelectItem value="4 weeks">4 weeks (Standard)</SelectItem>
                     <SelectItem value="8 weeks">8 weeks (Comprehensive)</SelectItem>
                     <SelectItem value="12 weeks">12 weeks (Enterprise)</SelectItem>
+                    <SelectItem value="3 months">3 months</SelectItem>
+                    <SelectItem value="6 months">6 months</SelectItem>
+                    <SelectItem value="9 months">9 months</SelectItem>
+                    <SelectItem value="12 months">12 months</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -331,7 +335,7 @@ export default function Scope() {
                 <FormLabel>Budget Range</FormLabel>
                 <FormControl>
                   <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="grid grid-cols-2 gap-4">
-                    {["<$5k", "$5-15k", "$15-40k", "$40k+"].map((budget) => (
+                    {["$500-$1k", "<$5k", "$5-15k", "$15-40k", "$40k+"].map((budget) => (
                       <label
                         key={budget}
                         className={`flex items-center justify-center p-4 rounded-lg border cursor-pointer transition-colors ${
