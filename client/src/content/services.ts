@@ -49,7 +49,7 @@ export const services: Service[] = [
     icon: "Brain",
     tags: ["AI/ML", "GenAI", "Automation"],
     image: "/images/services/ai-ml.jpg",
-    imageAlt: "Person interacting with AI-powered technology on a computer screen",
+    imageAlt: "African American developer working with AI and machine learning technology",
   },
   {
     slug: "spatial-ar",
@@ -81,7 +81,7 @@ export const services: Service[] = [
     icon: "Glasses",
     tags: ["Spatial", "AR", "WebXR"],
     image: "/images/services/spatial-ar.jpg",
-    imageAlt: "Person wearing augmented reality glasses exploring immersive technology",
+    imageAlt: "African American professional experiencing virtual reality technology",
   },
   {
     slug: "3d-printing-prototyping",
@@ -113,7 +113,7 @@ export const services: Service[] = [
     icon: "Printer",
     tags: ["3D Printing", "Prototyping", "Manufacturing"],
     image: "/images/services/3d-printing.jpg",
-    imageAlt: "3D printer creating a prototype object layer by layer",
+    imageAlt: "African American engineer working with 3D printing and manufacturing equipment",
   },
   {
     slug: "iot-gps-tracking",
@@ -146,7 +146,7 @@ export const services: Service[] = [
     icon: "MapPin",
     tags: ["IoT", "GPS", "Tracking"],
     image: "/images/services/iot-gps.jpg",
-    imageAlt: "Connected IoT devices and sensors for smart tracking solutions",
+    imageAlt: "African American professional using connected smart devices and IoT technology",
   },
   {
     slug: "ecommerce-shopify",
@@ -178,7 +178,7 @@ export const services: Service[] = [
     icon: "ShoppingCart",
     tags: ["E-commerce", "Shopify", "POD"],
     image: "/images/services/ecommerce.jpg",
-    imageAlt: "Small business owner managing online store and shipping packages",
+    imageAlt: "African American entrepreneur running their e-commerce business",
   },
   {
     slug: "branding-visual-identity",
@@ -210,7 +210,7 @@ export const services: Service[] = [
     icon: "Palette",
     tags: ["Branding", "Design", "Identity"],
     image: "/images/services/branding.jpg",
-    imageAlt: "Creative designer working on branding and logo design",
+    imageAlt: "African American creative designer developing brand identity and graphics",
   },
   {
     slug: "training-workshops",
@@ -242,7 +242,7 @@ export const services: Service[] = [
     icon: "GraduationCap",
     tags: ["Training", "Workshops", "Education"],
     image: "/images/services/training.jpg",
-    imageAlt: "Diverse group learning technology skills in a workshop setting",
+    imageAlt: "African American instructor leading a technology training workshop",
   },
 ];
 

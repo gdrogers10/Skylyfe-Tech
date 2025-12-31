@@ -9,7 +9,7 @@ export function Hero() {
       <div className="absolute inset-0">
         <img
           src="/images/hero-team.jpg"
-          alt="Diverse team of professionals collaborating on technology solutions"
+          alt="African American professionals collaborating on technology solutions in a meeting"
           className="w-full h-full object-cover"
           loading="eager"
         />

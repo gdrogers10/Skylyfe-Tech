@@ -56,7 +56,7 @@ export default function About() {
             <div className="relative rounded-2xl overflow-hidden">
               <img
                 src="/images/about-community.jpg"
-                alt="Community members learning and collaborating on technology projects together"
+                alt="African American community members learning technology skills together in a workshop"
                 className="w-full h-80 object-cover"
                 loading="lazy"
               />
