@@ -1,5 +1,6 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
+import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
 import { insertContactSchema, sowFormSchema } from "@shared/schema";
 import { generateSow, renderSowHtml } from "./sow";
@@ -7,13 +8,29 @@ import { generatePdf } from "./pdf";
 import { sendSOWNotification, sendContactNotification } from "./email";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: "Too many contact submissions, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const sowLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: { error: "Too many SOW generation requests, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   await setupAuth(app);
   registerAuthRoutes(app);
-  app.post("/api/contact", async (req: Request, res: Response) => {
+  app.post("/api/contact", contactLimiter, async (req: Request, res: Response) => {
     try {
       const parsed = insertContactSchema.safeParse(req.body);
       if (!parsed.success) {
@@ -25,8 +42,8 @@ export async function registerRoutes(
       sendContactNotification({
         name: parsed.data.name,
         email: parsed.data.email,
-        organization: parsed.data.organization,
-        phone: parsed.data.phone,
+        organization: parsed.data.organization ?? undefined,
+        phone: parsed.data.phone ?? undefined,
         message: parsed.data.message,
       }).catch(err => console.error("Contact email notification failed:", err));
 
@@ -49,7 +66,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/sow", isAuthenticated, async (req: Request, res: Response) => {
+  app.post("/api/sow", sowLimiter, isAuthenticated, async (req: Request, res: Response) => {
     try {
       const parsed = sowFormSchema.safeParse(req.body);
       if (!parsed.success) {
@@ -66,7 +83,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/sow/pdf", isAuthenticated, async (req: Request, res: Response) => {
+  app.post("/api/sow/pdf", sowLimiter, isAuthenticated, async (req: Request, res: Response) => {
     try {
       const { html, clientName, clientEmail, projectName } = req.body;
       if (!html || typeof html !== "string") {
