@@ -77,3 +77,20 @@ Database tables include: users, contacts, conversations, and messages (for chat 
 - **Data**: @tanstack/react-query, drizzle-orm, drizzle-zod
 - **Server**: express, puppeteer-core, openai
 - **Utilities**: date-fns, clsx, tailwind-merge
+- **Testing**: jest, @swc/jest, @testing-library/react, @testing-library/jest-dom, supertest
+
+## Testing
+
+### Test Framework
+- **Jest** with @swc/jest for TypeScript compilation
+- Separate test environments for client (jsdom) and server (node)
+- Run all tests: `npx jest --config jest.config.mjs --no-cache`
+
+### Test Coverage
+- **Backend API Tests** (4 tests): Contact form submission, SOW endpoint authentication
+- **Frontend Component Tests** (3 tests): BottomNav rendering, auth hook state
+
+### Configuration Notes
+- `transformIgnorePatterns` configured for ESM modules (wouter, regexparam)
+- `modulePathIgnorePatterns` excludes `.cache/` to avoid haste module collisions
+- File mock for static assets, identity-obj-proxy for CSS modules
