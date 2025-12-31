@@ -55,12 +55,16 @@ export interface ContactEmailData {
 }
 
 export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> {
+  console.log(`[Email] Starting SOW notification for project: ${data.projectName}`);
   try {
+    console.log('[Email] Getting Resend client...');
     const { client, fromEmail } = await getResendClient();
+    console.log(`[Email] Got client, fromEmail: ${fromEmail}`);
     
     const pdfBase64 = data.pdfBuffer.toString('base64');
+    console.log(`[Email] PDF encoded, size: ${pdfBase64.length} chars`);
     
-    await client.emails.send({
+    const result = await client.emails.send({
       from: fromEmail || 'noreply@resend.dev',
       to: 'g.rogersky@gmail.com',
       subject: `New SOW Generated: ${data.projectName} - ${data.clientName}`,
@@ -85,10 +89,10 @@ export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> 
       ]
     });
     
-    console.log(`SOW email sent successfully for project: ${data.projectName}`);
+    console.log(`[Email] SOW email sent successfully for project: ${data.projectName}`, result);
     return true;
   } catch (error) {
-    console.error('Failed to send SOW email:', error);
+    console.error('[Email] Failed to send SOW email:', error);
     return false;
   }
 }
