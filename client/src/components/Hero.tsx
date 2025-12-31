@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { site } from "@/content/site";
-import { ArrowRight } from "lucide-react";
+import { Rocket } from "lucide-react";
 
 export function Hero() {
   return (
@@ -24,8 +24,8 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href={site.hero.primaryCta.href}>
               <Button size="lg" className="gap-2 text-base px-8" data-testid="button-hero-primary">
+                <Rocket className="h-4 w-4" />
                 {site.hero.primaryCta.text}
-                <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
             <Link href={site.hero.secondaryCta.href}>

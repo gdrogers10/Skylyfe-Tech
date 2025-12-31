@@ -13,7 +13,7 @@ export const site = {
   hero: {
     title: "Emerging technology services for bold brands and communities.",
     subtitle: "AI/ML, Spatial/AR, 3D printing, IoT/GPS, and e-commerce—delivered with clear scopes, timelines, and outcomes.",
-    primaryCta: { text: "Scope Your Project", href: "/scope" },
+    primaryCta: { text: "Launch Your Project", href: "/scope" },
     secondaryCta: { text: "Explore Services", href: "/services" },
   },
   about: {

@@ -7,7 +7,7 @@ import { Testimonial } from "@/components/Testimonial";
 import { services } from "@/content/services";
 import { partners, testimonials } from "@/content/partners";
 import { site } from "@/content/site";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Rocket } from "lucide-react";
 
 export default function Home() {
   const featuredServices = services.slice(0, 6);
@@ -89,8 +89,8 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/scope">
               <Button size="lg" className="gap-2 text-base px-8" data-testid="button-cta-scope">
+                <Rocket className="h-4 w-4" />
                 {site.hero.primaryCta.text}
-                <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
             <Link href="/contact">

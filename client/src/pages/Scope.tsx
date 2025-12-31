@@ -612,7 +612,7 @@ export default function Scope() {
           <aside className="lg:w-80 lg:sticky lg:top-24 lg:self-start">
             <Card>
               <CardHeader>
-                <h1 className="text-xl font-semibold" data-testid="text-scope-title">Scope Your Project</h1>
+                <h1 className="text-xl font-semibold" data-testid="text-scope-title">Launch Your Project</h1>
                 <p className="text-sm text-muted-foreground">Generate a detailed Statement of Work</p>
               </CardHeader>
               <CardContent>

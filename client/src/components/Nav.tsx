@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Rocket } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/content/site";
 
@@ -46,7 +46,8 @@ export function Nav() {
 
         <div className="hidden md:flex items-center gap-3">
           <Link href="/scope">
-            <Button data-testid="button-scope-cta">
+            <Button className="gap-2" data-testid="button-scope-cta">
+              <Rocket className="h-4 w-4" />
               {site.hero.primaryCta.text}
             </Button>
           </Link>
@@ -82,7 +83,8 @@ export function Nav() {
               </Link>
             ))}
             <Link href="/scope" onClick={() => setMobileMenuOpen(false)}>
-              <Button className="w-full mt-2" data-testid="button-mobile-scope-cta">
+              <Button className="w-full mt-2 gap-2" data-testid="button-mobile-scope-cta">
+                <Rocket className="h-4 w-4" />
                 {site.hero.primaryCta.text}
               </Button>
             </Link>
