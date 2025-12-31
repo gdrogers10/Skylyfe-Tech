@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import sanitizeHtml from "sanitize-html";
 import { type SowFormData, type SowOutput } from "@shared/schema";
 
 const openai = new OpenAI({
@@ -169,6 +170,51 @@ Generate a comprehensive, professional SOW document with clear objectives, detai
   }
 
   return JSON.parse(content) as SowOutput;
+}
+
+export function sanitizeSowHtml(html: string): string {
+  return sanitizeHtml(html, {
+    allowedTags: [
+      'div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'strong', 'em', 'b', 'i', 'br', 'hr'
+    ],
+    allowedAttributes: {
+      '*': ['style', 'class']
+    },
+    allowedStyles: {
+      '*': {
+        'color': [/^#[0-9a-fA-F]{3,6}$/],
+        'background': [/^#[0-9a-fA-F]{3,6}$/],
+        'background-color': [/^#[0-9a-fA-F]{3,6}$/],
+        'font-family': [/^[a-zA-Z\s\-,'"]+$/],
+        'font-size': [/^\d+(?:px|em|rem|pt|%)$/],
+        'font-weight': [/^\d+$/, /^bold$/, /^normal$/],
+        'line-height': [/^\d+(?:\.\d+)?$/],
+        'text-align': [/^left$/, /^right$/, /^center$/, /^justify$/],
+        'margin': [/^[\d\s.]+(?:px|em|rem|%)?\s*$/],
+        'margin-top': [/^\d+(?:px|em|rem|%)$/],
+        'margin-bottom': [/^\d+(?:px|em|rem|%)$/],
+        'margin-left': [/^\d+(?:px|em|rem|%)$/],
+        'margin-right': [/^\d+(?:px|em|rem|%)$/],
+        'padding': [/^[\d\s.]+(?:px|em|rem|%)?\s*$/],
+        'padding-top': [/^\d+(?:px|em|rem|%)$/],
+        'padding-bottom': [/^\d+(?:px|em|rem|%)$/],
+        'padding-left': [/^\d+(?:px|em|rem|%)$/],
+        'padding-right': [/^\d+(?:px|em|rem|%)$/],
+        'border': [/^\d+px\s+\w+\s+#[0-9a-fA-F]{3,6}$/],
+        'border-bottom': [/^\d+px\s+\w+\s+#[0-9a-fA-F]{3,6}$/],
+        'border-top': [/^\d+px\s+\w+\s+#[0-9a-fA-F]{3,6}$/],
+        'border-radius': [/^\d+(?:px|em|rem|%)$/],
+        'border-collapse': [/^collapse$/, /^separate$/],
+        'width': [/^\d+(?:px|em|rem|%)$/],
+        'display': [/^grid$/, /^flex$/, /^block$/, /^inline$/, /^inline-block$/],
+        'grid-template-columns': [/^(?:\d+fr\s*)+$/, /^repeat\(\d+,\s*\d+fr\)$/],
+        'gap': [/^\d+(?:px|em|rem|%)$/],
+      }
+    },
+    disallowedTagsMode: 'discard'
+  });
 }
 
 export function renderSowHtml(sow: SowOutput): string {

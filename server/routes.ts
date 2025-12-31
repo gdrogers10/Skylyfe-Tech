@@ -3,10 +3,21 @@ import { createServer, type Server } from "http";
 import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
 import { insertContactSchema, sowFormSchema } from "@shared/schema";
-import { generateSow, renderSowHtml } from "./sow";
+import { generateSow, renderSowHtml, sanitizeSowHtml } from "./sow";
 import { generatePdf } from "./pdf";
 import { sendSOWNotification, sendContactNotification } from "./email";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
+
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
 
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -22,6 +33,26 @@ const sowLimiter = rateLimit({
   message: { error: "Too many SOW generation requests, please try again later" },
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req: Request) => {
+    const user = (req as any).user;
+    const userId = user?.id || 'anonymous';
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    return `${userId}-${ip}`;
+  },
+});
+
+const pdfEmailLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 20,
+  message: { error: "Too many PDF/email requests, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req: Request) => {
+    const user = (req as any).user;
+    const userId = user?.id || 'anonymous';
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    return `${userId}-${ip}`;
+  },
 });
 
 export async function registerRoutes(
@@ -40,11 +71,11 @@ export async function registerRoutes(
       const contact = await storage.createContact(parsed.data);
 
       sendContactNotification({
-        name: parsed.data.name,
-        email: parsed.data.email,
-        organization: parsed.data.organization ?? undefined,
-        phone: parsed.data.phone ?? undefined,
-        message: parsed.data.message,
+        name: escapeHtml(parsed.data.name),
+        email: escapeHtml(parsed.data.email),
+        organization: parsed.data.organization ? escapeHtml(parsed.data.organization) : undefined,
+        phone: parsed.data.phone ? escapeHtml(parsed.data.phone) : undefined,
+        message: escapeHtml(parsed.data.message),
       }).catch(err => console.error("Contact email notification failed:", err));
 
       if (process.env.CONTACT_WEBHOOK_URL) {
@@ -74,7 +105,7 @@ export async function registerRoutes(
       }
 
       const sow = await generateSow(parsed.data);
-      const html = renderSowHtml(sow);
+      const html = sanitizeSowHtml(renderSowHtml(sow));
 
       res.json({ sow, html });
     } catch (error) {
@@ -83,14 +114,18 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/sow/pdf", sowLimiter, isAuthenticated, async (req: Request, res: Response) => {
+  app.post("/api/sow/pdf", pdfEmailLimiter, isAuthenticated, async (req: Request, res: Response) => {
     try {
       const { html } = req.body;
       if (!html || typeof html !== "string") {
         return res.status(400).json({ error: "HTML content required" });
       }
+      if (html.length > 500000) {
+        return res.status(400).json({ error: "HTML content too large" });
+      }
 
-      const pdfBuffer = await generatePdf(html);
+      const sanitizedHtml = sanitizeSowHtml(html);
+      const pdfBuffer = await generatePdf(sanitizedHtml);
 
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", 'attachment; filename="Statement-of-Work.pdf"');
@@ -101,22 +136,29 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/sow/email", sowLimiter, isAuthenticated, async (req: Request, res: Response) => {
+  app.post("/api/sow/email", pdfEmailLimiter, isAuthenticated, async (req: Request, res: Response) => {
     try {
       const { html, clientName, clientEmail, projectName } = req.body;
       if (!html || typeof html !== "string") {
         return res.status(400).json({ error: "HTML content required" });
       }
+      if (html.length > 500000) {
+        return res.status(400).json({ error: "HTML content too large" });
+      }
       if (!clientName || !clientEmail || !projectName) {
         return res.status(400).json({ error: "Client name, email, and project name are required" });
       }
+      if (typeof clientName !== "string" || typeof clientEmail !== "string" || typeof projectName !== "string") {
+        return res.status(400).json({ error: "Invalid client data" });
+      }
 
-      const pdfBuffer = await generatePdf(html);
+      const sanitizedHtml = sanitizeSowHtml(html);
+      const pdfBuffer = await generatePdf(sanitizedHtml);
 
       const success = await sendSOWNotification({
-        clientName,
-        clientEmail,
-        projectName,
+        clientName: escapeHtml(clientName),
+        clientEmail: escapeHtml(clientEmail),
+        projectName: escapeHtml(projectName),
         pdfBuffer,
       });
 
