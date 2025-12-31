@@ -449,46 +449,21 @@ export default function Scope() {
               <h2 className="text-2xl font-semibold tracking-tight">Success Metrics</h2>
               <p className="text-muted-foreground mt-2">How will we measure project success?</p>
             </div>
-            <FormField control={form.control} name="successMetrics.predefined" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Common Success Metrics</FormLabel>
-                <div className="space-y-2">
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-sm font-medium mb-2">Common Success Metrics to Consider:</h4>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
                   {metricOptions.map((metric) => (
-                    <div
-                      key={metric}
-                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
-                        field.value.includes(metric) ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                      }`}
-                      onClick={() => {
-                        const isChecked = field.value.includes(metric);
-                        const updated = isChecked
-                          ? field.value.filter((m) => m !== metric)
-                          : [...field.value, metric];
-                        field.onChange(updated);
-                      }}
-                      data-testid={`metric-item-${metric.slice(0, 20).toLowerCase().replace(/\s+/g, '-')}`}
-                    >
-                      <Checkbox
-                        checked={field.value.includes(metric)}
-                        onCheckedChange={(checked) => {
-                          const updated = checked
-                            ? [...field.value, metric]
-                            : field.value.filter((m) => m !== metric);
-                          field.onChange(updated);
-                        }}
-                        data-testid={`checkbox-metric-${metric.slice(0, 20).toLowerCase().replace(/\s+/g, '-')}`}
-                      />
-                      <span className="text-sm">{metric}</span>
-                    </div>
+                    <li key={metric}>{metric}</li>
                   ))}
-                </div>
-                <FormMessage />
-              </FormItem>
-            )} />
+                </ul>
+              </div>
+            </div>
             <FormField control={form.control} name="successMetrics.custom" render={({ field }) => (
               <FormItem>
-                <FormLabel>Custom Metrics</FormLabel>
-                <FormControl><Textarea placeholder="Any additional success criteria specific to your project?" className="min-h-24 resize-none" {...field} data-testid="input-custom-metrics" /></FormControl>
+                <FormLabel>Your Success Metrics</FormLabel>
+                <FormControl><Textarea placeholder="Describe how you'll measure project success. You can include any of the suggestions above or your own criteria..." className="min-h-32 resize-none" {...field} data-testid="input-custom-metrics" /></FormControl>
+                <FormDescription>Enter the metrics that matter most to your project</FormDescription>
                 <FormMessage />
               </FormItem>
             )} />
