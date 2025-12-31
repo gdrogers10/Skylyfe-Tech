@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { insertContactSchema, sowFormSchema } from "@shared/schema";
 import { generateSow, renderSowHtml } from "./sow";
 import { generatePdf } from "./pdf";
-import { sendSOWNotification } from "./email";
+import { sendSOWNotification, sendContactNotification } from "./email";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -18,6 +18,14 @@ export async function registerRoutes(
       }
 
       const contact = await storage.createContact(parsed.data);
+
+      sendContactNotification({
+        name: parsed.data.name,
+        email: parsed.data.email,
+        organization: parsed.data.organization,
+        phone: parsed.data.phone,
+        message: parsed.data.message,
+      }).catch(err => console.error("Contact email notification failed:", err));
 
       if (process.env.CONTACT_WEBHOOK_URL) {
         try {

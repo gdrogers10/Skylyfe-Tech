@@ -46,6 +46,14 @@ export interface SOWEmailData {
   pdfBuffer: Buffer;
 }
 
+export interface ContactEmailData {
+  name: string;
+  email: string;
+  organization?: string;
+  phone?: string;
+  message: string;
+}
+
 export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> {
   try {
     const { client, fromEmail } = await getResendClient();
@@ -81,6 +89,39 @@ export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> 
     return true;
   } catch (error) {
     console.error('Failed to send SOW email:', error);
+    return false;
+  }
+}
+
+export async function sendContactNotification(data: ContactEmailData): Promise<boolean> {
+  try {
+    const { client, fromEmail } = await getResendClient();
+    
+    await client.emails.send({
+      from: fromEmail || 'noreply@resend.dev',
+      to: 'myskylyfe@gmail.com',
+      subject: `New Contact Form Submission from ${data.name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p>Someone has reached out through the website contact form.</p>
+        <h3>Contact Details:</h3>
+        <ul>
+          <li><strong>Name:</strong> ${data.name}</li>
+          <li><strong>Email:</strong> ${data.email}</li>
+          ${data.organization ? `<li><strong>Organization:</strong> ${data.organization}</li>` : ''}
+          ${data.phone ? `<li><strong>Phone:</strong> ${data.phone}</li>` : ''}
+        </ul>
+        <h3>Message:</h3>
+        <p style="background: #f5f5f5; padding: 16px; border-radius: 8px;">${data.message.replace(/\n/g, '<br>')}</p>
+        <hr>
+        <p><em>This is an automated notification from Skylyfe Technologies</em></p>
+      `,
+    });
+    
+    console.log(`Contact email sent successfully from: ${data.name}`);
+    return true;
+  } catch (error) {
+    console.error('Failed to send contact email:', error);
     return false;
   }
 }
