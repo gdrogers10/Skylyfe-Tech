@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { BottomNav } from "@/components/BottomNav";
 import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import ServiceDetail from "@/pages/ServiceDetail";
@@ -37,10 +38,11 @@ function App() {
       <TooltipProvider>
         <div className="min-h-screen flex flex-col">
           <Nav />
-          <div className="flex-1">
+          <div className="flex-1 pb-16 md:pb-0">
             <Router />
           </div>
-          <Footer />
+          <Footer className="hidden md:block" />
+          <BottomNav />
         </div>
         <Toaster />
       </TooltipProvider>

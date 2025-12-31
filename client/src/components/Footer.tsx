@@ -22,9 +22,13 @@ const legalLinks = [
   { label: "Privacy Policy", href: "/legal#privacy" },
 ];
 
-export function Footer() {
+interface FooterProps {
+  className?: string;
+}
+
+export function Footer({ className = "" }: FooterProps) {
   return (
-    <footer className="bg-card border-t border-border">
+    <footer className={`bg-card border-t border-border ${className}`}>
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="space-y-4">
