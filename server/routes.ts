@@ -5,11 +5,14 @@ import { insertContactSchema, sowFormSchema } from "@shared/schema";
 import { generateSow, renderSowHtml } from "./sow";
 import { generatePdf } from "./pdf";
 import { sendSOWNotification, sendContactNotification } from "./email";
+import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  await setupAuth(app);
+  registerAuthRoutes(app);
   app.post("/api/contact", async (req: Request, res: Response) => {
     try {
       const parsed = insertContactSchema.safeParse(req.body);
@@ -46,7 +49,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/sow", async (req: Request, res: Response) => {
+  app.post("/api/sow", isAuthenticated, async (req: Request, res: Response) => {
     try {
       const parsed = sowFormSchema.safeParse(req.body);
       if (!parsed.success) {
@@ -63,7 +66,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/sow/pdf", async (req: Request, res: Response) => {
+  app.post("/api/sow/pdf", isAuthenticated, async (req: Request, res: Response) => {
     try {
       const { html, clientName, clientEmail, projectName } = req.body;
       if (!html || typeof html !== "string") {
