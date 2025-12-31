@@ -81,7 +81,7 @@ export const services: Service[] = [
     icon: "Glasses",
     tags: ["Spatial", "AR", "WebXR"],
     image: "/images/services/spatial-ar.jpg",
-    imageAlt: "African American professional experiencing virtual reality technology",
+    imageAlt: "Augmented reality books and interactive games bringing education to life",
   },
   {
     slug: "3d-printing-prototyping",
