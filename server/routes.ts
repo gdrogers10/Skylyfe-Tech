@@ -1,6 +1,6 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import { storage } from "./storage";
 import { insertContactSchema, sowFormSchema } from "@shared/schema";
 import { generateSow, renderSowHtml, sanitizeSowHtml } from "./sow";
@@ -35,9 +35,7 @@ const sowLimiter = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req: Request) => {
     const user = (req as any).user;
-    const userId = user?.id || 'anonymous';
-    const ip = req.ip || req.socket.remoteAddress || 'unknown';
-    return `${userId}-${ip}`;
+    return user?.id || ipKeyGenerator(req.ip || '127.0.0.1');
   },
 });
 
@@ -49,9 +47,7 @@ const pdfEmailLimiter = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req: Request) => {
     const user = (req as any).user;
-    const userId = user?.id || 'anonymous';
-    const ip = req.ip || req.socket.remoteAddress || 'unknown';
-    return `${userId}-${ip}`;
+    return user?.id || ipKeyGenerator(req.ip || '127.0.0.1');
   },
 });
 

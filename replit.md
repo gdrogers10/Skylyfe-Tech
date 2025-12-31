@@ -100,14 +100,23 @@ Database tables: users (auth), sessions (auth), contacts (contact form submissio
 
 ### Authentication
 - **Replit Auth**: Users must sign in (Google, GitHub, Apple, email/password) before accessing SOW generator
-- **Protected Routes**: `/api/sow` and `/api/sow/pdf` require authentication via `isAuthenticated` middleware
+- **Protected Routes**: `/api/sow`, `/api/sow/pdf`, and `/api/sow/email` require authentication via `isAuthenticated` middleware
+- **Session Security**: Cookies use `httpOnly`, `secure`, and `sameSite: 'strict'` for CSRF protection
 
 ### Rate Limiting
 - **Contact Form**: 5 requests per 15 minutes per IP
-- **SOW Generation**: 10 requests per hour per IP
-- Uses `express-rate-limit` with standard headers
+- **SOW Generation**: 10 requests per hour per user+IP combination
+- **PDF/Email**: 20 requests per hour per user+IP combination
+- Uses `express-rate-limit` with user-based key generation for authenticated routes
+
+### Input Validation & Sanitization
+- All form inputs validated with Zod schemas before processing
+- HTML content sanitized using `sanitize-html` to prevent XSS attacks
+- CSS styles restricted to safe values (no url(), javascript:, or expression())
+- Contact form and email notification data escaped to prevent HTML/header injection
+- Request body size limited to 1MB, HTML content limited to 500KB
 
 ### API Security
-- All form inputs validated with Zod schemas
 - CORS handled by Vite proxy in development
 - Session management via PostgreSQL-backed sessions
+- Type checking on all API request parameters
