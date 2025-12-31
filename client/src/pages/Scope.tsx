@@ -125,7 +125,7 @@ export default function Scope() {
           html: sowHtml,
           clientName: formData.contact.name,
           clientEmail: formData.contact.email,
-          projectName: generatedSow?.projectTitle || formData.projectBasics.projectName,
+          projectName: generatedSow?.projectTitle || formData.projectBasics.projectTitle,
         }),
       });
       if (!response.ok) throw new Error("PDF generation failed");
