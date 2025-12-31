@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { site } from "@/content/site";
 import { SiInstagram, SiGithub } from "react-icons/si";
-import logoImage from "@assets/generated_images/skylyfe_tech_modern_logo.png";
+import logoImage from "@assets/Skylyfe_Tech_1767155638633.png";
 
 const quickLinks = [
   { label: "Home", href: "/" },

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Rocket, LogIn, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/content/site";
-import logoImage from "@assets/generated_images/skylyfe_tech_modern_logo.png";
+import logoImage from "@assets/Skylyfe_Tech_1767155638633.png";
 import { useAuth } from "@/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
