@@ -242,7 +242,7 @@ export const services: Service[] = [
     icon: "GraduationCap",
     tags: ["Training", "Workshops", "Education"],
     image: "/images/services/training.jpg",
-    imageAlt: "African American instructor leading a technology training workshop",
+    imageAlt: "Youth learning technology and product design skills in a hands-on workshop session",
   },
 ];
 
