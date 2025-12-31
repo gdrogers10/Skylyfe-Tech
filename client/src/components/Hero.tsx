@@ -43,6 +43,9 @@ export function Hero() {
               </Button>
             </Link>
           </div>
+          <p className="text-sm text-muted-foreground pt-2" data-testid="text-sow-hint">
+            Use our AI-powered SOW Generator to create a professional project scope in minutes.
+          </p>
         </div>
       </div>
     </section>
