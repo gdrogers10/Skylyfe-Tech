@@ -13,6 +13,8 @@ export interface Service {
   ctas: { primaryText: string; primaryHref: string };
   icon: string;
   tags: string[];
+  image?: string;
+  imageAlt?: string;
 }
 
 export const services: Service[] = [
@@ -46,6 +48,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Start AI Project", primaryHref: "/scope?service=ai-ml-genai" },
     icon: "Brain",
     tags: ["AI/ML", "GenAI", "Automation"],
+    image: "/images/services/ai-ml.jpg",
+    imageAlt: "Person interacting with AI-powered technology on a computer screen",
   },
   {
     slug: "spatial-ar",
@@ -76,6 +80,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Create AR Experience", primaryHref: "/scope?service=spatial-ar" },
     icon: "Glasses",
     tags: ["Spatial", "AR", "WebXR"],
+    image: "/images/services/spatial-ar.jpg",
+    imageAlt: "Person wearing augmented reality glasses exploring immersive technology",
   },
   {
     slug: "3d-printing-prototyping",
@@ -106,6 +112,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Start Prototyping", primaryHref: "/scope?service=3d-printing-prototyping" },
     icon: "Printer",
     tags: ["3D Printing", "Prototyping", "Manufacturing"],
+    image: "/images/services/3d-printing.jpg",
+    imageAlt: "3D printer creating a prototype object layer by layer",
   },
   {
     slug: "iot-gps-tracking",
@@ -137,6 +145,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Build IoT Solution", primaryHref: "/scope?service=iot-gps-tracking" },
     icon: "MapPin",
     tags: ["IoT", "GPS", "Tracking"],
+    image: "/images/services/iot-gps.jpg",
+    imageAlt: "Connected IoT devices and sensors for smart tracking solutions",
   },
   {
     slug: "ecommerce-shopify",
@@ -167,6 +177,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Launch Store", primaryHref: "/scope?service=ecommerce-shopify" },
     icon: "ShoppingCart",
     tags: ["E-commerce", "Shopify", "POD"],
+    image: "/images/services/ecommerce.jpg",
+    imageAlt: "Small business owner managing online store and shipping packages",
   },
   {
     slug: "branding-visual-identity",
@@ -197,6 +209,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Build Your Brand", primaryHref: "/scope?service=branding-visual-identity" },
     icon: "Palette",
     tags: ["Branding", "Design", "Identity"],
+    image: "/images/services/branding.jpg",
+    imageAlt: "Creative designer working on branding and logo design",
   },
   {
     slug: "training-workshops",
@@ -227,6 +241,8 @@ export const services: Service[] = [
     ctas: { primaryText: "Schedule Training", primaryHref: "/scope?service=training-workshops" },
     icon: "GraduationCap",
     tags: ["Training", "Workshops", "Education"],
+    image: "/images/services/training.jpg",
+    imageAlt: "Diverse group learning technology skills in a workshop setting",
   },
 ];
 

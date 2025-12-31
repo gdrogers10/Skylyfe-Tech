@@ -23,18 +23,29 @@ export function ServiceCard({ service }: ServiceCardProps) {
 
   return (
     <Card className="group h-full flex flex-col hover-elevate transition-all duration-200" data-testid={`card-service-${service.slug}`}>
-      <CardHeader className="space-y-4">
-        <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-          <Icon className="h-6 w-6 text-primary" />
+      {service.image && (
+        <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+          <img
+            src={service.image}
+            alt={service.imageAlt || service.title}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
         </div>
-        <div className="space-y-2">
+      )}
+      <CardHeader className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+            <Icon className="h-5 w-5 text-primary" />
+          </div>
           <h3 className="text-xl font-semibold tracking-tight" data-testid={`text-service-title-${service.slug}`}>
             {service.title}
           </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {service.subtitle}
-          </p>
         </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {service.subtitle}
+        </p>
       </CardHeader>
       <CardContent className="flex-1">
         <div className="flex flex-wrap gap-2">

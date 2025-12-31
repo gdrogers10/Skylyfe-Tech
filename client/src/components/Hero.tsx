@@ -5,10 +5,19 @@ import { Rocket } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative bg-gradient-to-b from-background via-background to-card overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0">
+        <img
+          src="/images/hero-team.jpg"
+          alt="Diverse team of professionals collaborating on technology solutions"
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
+      </div>
       <div className="relative max-w-7xl mx-auto px-6 py-24 md:py-32 lg:py-40">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+        <div className="max-w-2xl space-y-8">
           <h1 
             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight"
             data-testid="text-hero-title"
@@ -16,12 +25,12 @@ export function Hero() {
             {site.hero.title}
           </h1>
           <p 
-            className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto"
+            className="text-lg md:text-xl text-muted-foreground leading-relaxed"
             data-testid="text-hero-subtitle"
           >
             {site.hero.subtitle}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-start gap-4 pt-4">
             <Link href={site.hero.primaryCta.href}>
               <Button size="lg" className="gap-2 text-base px-8" data-testid="button-hero-primary">
                 <Rocket className="h-4 w-4" />

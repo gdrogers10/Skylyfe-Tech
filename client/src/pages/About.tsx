@@ -40,13 +40,28 @@ export default function About() {
 
       <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 space-y-20">
-          <div className="max-w-4xl mx-auto space-y-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight" data-testid="text-about-mission">
-              Our Mission
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {site.about.mission}
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight" data-testid="text-about-mission">
+                Our Mission
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                {site.about.mission}
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                We believe that emerging technologies should be accessible to everyone, regardless of background or experience. 
+                Our team is committed to breaking down barriers and making innovation understandable and achievable for all communities.
+              </p>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden">
+              <img
+                src="/images/about-community.jpg"
+                alt="Community members learning and collaborating on technology projects together"
+                className="w-full h-80 object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/30 to-transparent" />
+            </div>
           </div>
 
           <div className="space-y-12">
