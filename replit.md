@@ -36,10 +36,11 @@ Key backend features:
 ### Data Storage
 - **ORM**: Drizzle ORM with PostgreSQL dialect
 - **Schema Location**: `shared/schema.ts` (shared between client and server)
-- **Current Storage**: In-memory storage (`MemStorage` class) with database schema ready for PostgreSQL
+- **Production Storage**: PostgreSQL via `DatabaseStorage` class in `server/dbStorage.ts`
+- **Auth Storage**: Separate `authStorage` adapter in `server/replit_integrations/auth/storage.ts` handles Replit Auth user management
 - **Migrations**: Drizzle Kit configured for PostgreSQL migrations
 
-Database tables include: users, contacts, conversations, and messages (for chat functionality).
+Database tables: users (auth), sessions (auth), contacts (contact form submissions).
 
 ### AI Integration
 - **Provider**: OpenAI via Replit AI Integrations
@@ -94,3 +95,19 @@ Database tables include: users, contacts, conversations, and messages (for chat 
 - `transformIgnorePatterns` configured for ESM modules (wouter, regexparam)
 - `modulePathIgnorePatterns` excludes `.cache/` to avoid haste module collisions
 - File mock for static assets, identity-obj-proxy for CSS modules
+
+## Security
+
+### Authentication
+- **Replit Auth**: Users must sign in (Google, GitHub, Apple, email/password) before accessing SOW generator
+- **Protected Routes**: `/api/sow` and `/api/sow/pdf` require authentication via `isAuthenticated` middleware
+
+### Rate Limiting
+- **Contact Form**: 5 requests per 15 minutes per IP
+- **SOW Generation**: 10 requests per hour per IP
+- Uses `express-rate-limit` with standard headers
+
+### API Security
+- All form inputs validated with Zod schemas
+- CORS handled by Vite proxy in development
+- Session management via PostgreSQL-backed sessions
