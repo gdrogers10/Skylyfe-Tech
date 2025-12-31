@@ -454,7 +454,20 @@ export default function Scope() {
                 <FormLabel>Common Success Metrics</FormLabel>
                 <div className="space-y-2">
                   {metricOptions.map((metric) => (
-                    <label key={metric} className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:border-primary/50">
+                    <div
+                      key={metric}
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                        field.value.includes(metric) ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                      }`}
+                      onClick={() => {
+                        const isChecked = field.value.includes(metric);
+                        const updated = isChecked
+                          ? field.value.filter((m) => m !== metric)
+                          : [...field.value, metric];
+                        field.onChange(updated);
+                      }}
+                      data-testid={`metric-item-${metric.slice(0, 20).toLowerCase().replace(/\s+/g, '-')}`}
+                    >
                       <Checkbox
                         checked={field.value.includes(metric)}
                         onCheckedChange={(checked) => {
@@ -466,7 +479,7 @@ export default function Scope() {
                         data-testid={`checkbox-metric-${metric.slice(0, 20).toLowerCase().replace(/\s+/g, '-')}`}
                       />
                       <span className="text-sm">{metric}</span>
-                    </label>
+                    </div>
                   ))}
                 </div>
                 <FormMessage />
