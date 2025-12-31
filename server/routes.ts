@@ -169,5 +169,62 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/robots.txt", (req: Request, res: Response) => {
+    const robotsTxt = `User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://skylyfe.tech/sitemap.xml
+`;
+    res.type("text/plain").send(robotsTxt);
+  });
+
+  app.get("/sitemap.xml", (req: Request, res: Response) => {
+    const baseUrl = "https://skylyfe.tech";
+    const services = [
+      "ai-ml-genai",
+      "spatial-ar",
+      "3d-printing-prototyping",
+      "iot-gps-tracking",
+      "ecommerce-shopify",
+      "branding-visual-identity",
+      "training-workshops",
+    ];
+
+    const staticUrls = [
+      { loc: "/", priority: "1.0", changefreq: "weekly" },
+      { loc: "/services", priority: "0.9", changefreq: "weekly" },
+      { loc: "/scope", priority: "0.9", changefreq: "weekly" },
+      { loc: "/work", priority: "0.8", changefreq: "monthly" },
+      { loc: "/about", priority: "0.7", changefreq: "monthly" },
+      { loc: "/contact", priority: "0.7", changefreq: "monthly" },
+    ];
+
+    const serviceUrls = services.map((slug) => ({
+      loc: `/services/${slug}`,
+      priority: "0.8",
+      changefreq: "monthly",
+    }));
+
+    const allUrls = [...staticUrls, ...serviceUrls];
+    const lastmod = new Date().toISOString().split("T")[0];
+
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allUrls
+  .map(
+    (url) => `  <url>
+    <loc>${baseUrl}${url.loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${url.changefreq}</changefreq>
+    <priority>${url.priority}</priority>
+  </url>`
+  )
+  .join("\n")}
+</urlset>`;
+
+    res.type("application/xml").send(sitemap);
+  });
+
   return httpServer;
 }

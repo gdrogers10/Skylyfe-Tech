@@ -4,9 +4,11 @@ import { Hero } from "@/components/Hero";
 import { KPIBand } from "@/components/KPIBand";
 import { ServiceCard } from "@/components/ServiceCard";
 import { Testimonial } from "@/components/Testimonial";
+import { SEO } from "@/components/SEO";
 import { services } from "@/content/services";
 import { partners, testimonials } from "@/content/partners";
 import { site } from "@/content/site";
+import { seoConfig } from "@/lib/seo";
 import { ArrowRight, Rocket } from "lucide-react";
 
 export default function Home() {
@@ -14,6 +16,7 @@ export default function Home() {
 
   return (
     <main id="main-content">
+      <SEO {...seoConfig.home} />
       <Hero />
       <KPIBand />
 

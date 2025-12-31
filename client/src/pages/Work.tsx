@@ -1,10 +1,13 @@
 import { PageHeader } from "@/components/PageHeader";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
+import { SEO } from "@/components/SEO";
 import { caseStudies } from "@/content/impact";
+import { seoConfig } from "@/lib/seo";
 
 export default function Work() {
   return (
     <main id="main-content">
+      <SEO {...seoConfig.work} />
       <PageHeader
         title="Our Work"
         subtitle="Real outcomes from real partnerships—no PII, just results"

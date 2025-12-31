@@ -13,10 +13,12 @@ import { Badge } from "@/components/ui/badge";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Steps } from "@/components/Steps";
+import { SEO } from "@/components/SEO";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { isUnauthorizedError } from "@/lib/auth-utils";
 import { services } from "@/content/services";
+import { seoConfig } from "@/lib/seo";
 import { sowFormSchema, type SowFormData, type SowOutput } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn, Mail, Check } from "lucide-react";
@@ -654,6 +656,7 @@ export default function Scope() {
   if (authLoading) {
     return (
       <main id="main-content" className="bg-card min-h-screen flex items-center justify-center">
+        <SEO {...seoConfig.scope} />
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
           <p className="mt-4 text-muted-foreground">Loading...</p>
@@ -665,6 +668,7 @@ export default function Scope() {
   if (!isAuthenticated) {
     return (
       <main id="main-content" className="bg-card min-h-screen flex items-center justify-center">
+        <SEO {...seoConfig.scope} />
         <Card className="max-w-md w-full mx-4">
           <CardHeader className="text-center">
             <FileText className="h-12 w-12 mx-auto text-primary mb-4" />
@@ -704,6 +708,7 @@ export default function Scope() {
 
   return (
     <main id="main-content" className="bg-card min-h-screen">
+      <SEO {...seoConfig.scope} />
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <aside className="lg:w-80 lg:sticky lg:top-24 lg:self-start">

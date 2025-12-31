@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { SEO } from "@/components/SEO";
 import { getServiceBySlug } from "@/content/services";
+import { getServiceSEO, getServiceStructuredData } from "@/lib/seo";
 import { ArrowRight, CheckCircle, Clock, Wrench, Shield, DollarSign } from "lucide-react";
 
 export default function ServiceDetail() {
@@ -14,8 +16,12 @@ export default function ServiceDetail() {
     return <Redirect to="/services" />;
   }
 
+  const serviceSeo = getServiceSEO(service.slug, service.title, service.subtitle);
+  const structuredData = getServiceStructuredData(service);
+
   return (
     <main id="main-content">
+      <SEO {...serviceSeo} structuredData={structuredData} />
       <div className="bg-gradient-to-b from-background to-card border-b border-border py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-4xl space-y-6">

@@ -9,8 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { SEO } from "@/components/SEO";
 import { useToast } from "@/hooks/use-toast";
 import { site } from "@/content/site";
+import { seoConfig } from "@/lib/seo";
 import { apiRequest } from "@/lib/queryClient";
 import { Mail, MapPin, Send, CheckCircle } from "lucide-react";
 
@@ -66,6 +68,7 @@ export default function Contact() {
   if (submitted) {
     return (
       <main id="main-content">
+        <SEO {...seoConfig.contact} />
         <PageHeader title="Contact Us" />
         <section className="py-20 md:py-32">
           <div className="max-w-2xl mx-auto px-6 text-center space-y-6">
@@ -86,6 +89,7 @@ export default function Contact() {
 
   return (
     <main id="main-content">
+      <SEO {...seoConfig.contact} />
       <PageHeader
         title="Contact Us"
         subtitle="Let's discuss how we can help bring your vision to life"

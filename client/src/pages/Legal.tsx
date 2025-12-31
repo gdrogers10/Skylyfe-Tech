@@ -1,11 +1,14 @@
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SEO } from "@/components/SEO";
 import { site } from "@/content/site";
+import { seoConfig } from "@/lib/seo";
 
 export default function Legal() {
   return (
     <main id="main-content">
+      <SEO {...seoConfig.legal} />
       <PageHeader
         title="Legal"
         subtitle="Terms of Service and Privacy Policy"

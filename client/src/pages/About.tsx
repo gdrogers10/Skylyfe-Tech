@@ -1,8 +1,10 @@
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SEO } from "@/components/SEO";
 import { site } from "@/content/site";
 import { programs } from "@/content/programs";
+import { seoConfig } from "@/lib/seo";
 import { CheckCircle, Award, Users, Lightbulb, Heart } from "lucide-react";
 
 const values = [
@@ -33,6 +35,7 @@ export default function About() {
 
   return (
     <main id="main-content">
+      <SEO {...seoConfig.about} />
       <PageHeader
         title="About Skylyfe Tech"
         subtitle="The innovation arm of Skylyfe Inc, translating community mission into real products and outcomes"

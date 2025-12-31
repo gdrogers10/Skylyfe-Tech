@@ -1,10 +1,13 @@
 import { PageHeader } from "@/components/PageHeader";
 import { ServiceCard } from "@/components/ServiceCard";
+import { SEO } from "@/components/SEO";
 import { services } from "@/content/services";
+import { seoConfig } from "@/lib/seo";
 
 export default function Services() {
   return (
     <main id="main-content">
+      <SEO {...seoConfig.services} />
       <PageHeader
         title="Our Services"
         subtitle="End-to-end emerging technology solutions tailored to your goals"
