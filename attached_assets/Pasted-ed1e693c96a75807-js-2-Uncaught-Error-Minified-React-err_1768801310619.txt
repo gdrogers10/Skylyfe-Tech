@@ -1,0 +1,47 @@
+ed1e693c96a75807.js:2 Uncaught Error: Minified React error #425; visit https://reactjs.org/docs/error-decoder.html?invariant=425 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rv (ed1e693c96a75807.js:2:44482)
+    at ed1e693c96a75807.js:2:107957
+    at iA (ed1e693c96a75807.js:2:110704)
+    at iV (ed1e693c96a75807.js:2:103652)
+    at iU (ed1e693c96a75807.js:2:103462)
+    at i_ (ed1e693c96a75807.js:2:98511)
+    at C (ed1e693c96a75807.js:2:1564)
+    at MessagePort.M (ed1e693c96a75807.js:2:2094)
+
+6
+ed1e693c96a75807.js:2 Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at ly (ed1e693c96a75807.js:2:50675)
+    at o (ed1e693c96a75807.js:2:125676)
+    at iV (ed1e693c96a75807.js:2:103592)
+    at iU (ed1e693c96a75807.js:2:103462)
+    at i_ (ed1e693c96a75807.js:2:98511)
+    at C (ed1e693c96a75807.js:2:1564)
+    at MessagePort.M (ed1e693c96a75807.js:2:2094)
+ed1e693c96a75807.js:2 Uncaught Error: Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at o (ed1e693c96a75807.js:2:125335)
+    at iV (ed1e693c96a75807.js:2:103592)
+    at iU (ed1e693c96a75807.js:2:103462)
+    at iz (ed1e693c96a75807.js:2:100209)
+    at i_ (ed1e693c96a75807.js:2:98764)
+    at C (ed1e693c96a75807.js:2:1564)
+    at MessagePort.M (ed1e693c96a75807.js:2:2094)
+ac9ba3e8ec8cc75b.js:2 [LaunchDarkly] LaunchDarkly client initialized
+ac9ba3e8ec8cc75b.js:2 [Coframe] Replit Enterprise watcher loaded
+uBzfnRGI_tBxn3Tadni63:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ac9ba3e8ec8cc75b.js:2 
+ GET https://dotdevproxy.picard.repl.co/__reachability net::ERR_SSL_PROTOCOL_ERROR
+ac9ba3e8ec8cc75b.js:2 
+ GET https://dotdevproxy.picard.repl.co/__reachability net::ERR_SSL_PROTOCOL_ERROR
+ac9ba3e8ec8cc75b.js:2 
+ GET https://dotdevproxy.picard.repl.co/__reachability net::ERR_SSL_PROTOCOL_ERROR
+ac9ba3e8ec8cc75b.js:2 
+ GET https://dotdevproxy.worf.repl.co/__reachability net::ERR_SSL_PROTOCOL_ERROR
+ac9ba3e8ec8cc75b.js:2 
+ GET https://dotdevproxy.worf.repl.co/__reachability net::ERR_SSL_PROTOCOL_ERROR
+﻿
+
+Press cmd i to turn on code suggestions. Press cmd x to disable code suggestions.
+cmd
+i
+ to turn on code suggestions. Don't show again
+

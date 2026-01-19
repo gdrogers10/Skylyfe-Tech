@@ -114,8 +114,8 @@ export function Footer({ className = "" }: FooterProps) {
         </div>
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} {site.fullName}. All rights reserved.
+          <p className="text-sm text-muted-foreground" suppressHydrationWarning>
+            &copy; 2025 {site.fullName}. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             {legalLinks.map((link) => (
