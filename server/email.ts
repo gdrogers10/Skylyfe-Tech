@@ -89,6 +89,12 @@ export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> 
       ]
     });
     
+    // Check if Resend returned an error in the response
+    if (result.error) {
+      console.error(`[Email] Resend API error for project: ${data.projectName}`, result.error);
+      throw new Error(result.error.message || 'Email delivery failed');
+    }
+    
     console.log(`[Email] SOW email sent successfully for project: ${data.projectName}`, result);
     return true;
   } catch (error) {
@@ -101,7 +107,7 @@ export async function sendContactNotification(data: ContactEmailData): Promise<b
   try {
     const { client, fromEmail } = await getResendClient();
     
-    await client.emails.send({
+    const result = await client.emails.send({
       from: fromEmail || 'noreply@resend.dev',
       to: ['myskylyfe@gmail.com', 'g.rogersky@gmail.com'],
       subject: `New Contact Form Submission from ${data.name}`,
@@ -121,6 +127,12 @@ export async function sendContactNotification(data: ContactEmailData): Promise<b
         <p><em>This is an automated notification from Skylyfe Technologies</em></p>
       `,
     });
+    
+    // Check if Resend returned an error in the response
+    if (result.error) {
+      console.error(`[Email] Resend API error for contact from: ${data.name}`, result.error);
+      throw new Error(result.error.message || 'Email delivery failed');
+    }
     
     console.log(`Contact email sent successfully from: ${data.name}`);
     return true;
