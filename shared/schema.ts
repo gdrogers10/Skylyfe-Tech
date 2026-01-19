@@ -39,8 +39,8 @@ export const sowFormSchema = z.object({
     desiredOutcomes: z.string().optional(),
   }),
   timeline: z.object({
-    duration: z.enum(["2 weeks", "4 weeks", "8 weeks", "12 weeks"]),
-    budgetBand: z.enum(["<$5k", "$5-15k", "$15-40k", "$40k+"]),
+    duration: z.enum(["2 weeks", "4 weeks", "8 weeks", "12 weeks", "3 months", "6 months", "9 months", "12 months"]),
+    budgetBand: z.enum(["$500-$1k", "<$5k", "$5-15k", "$15-40k", "$40k+"]),
   }),
   techContext: z.object({
     toolsOfInterest: z.array(z.string()),

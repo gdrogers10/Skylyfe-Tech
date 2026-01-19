@@ -54,5 +54,19 @@ export default {
         '^@shared/(.*)$': '<rootDir>/shared/$1',
       },
     },
+    {
+      displayName: 'shared',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/shared/__tests__/**/*.test.ts'],
+      transform: {
+        '^.+\\.tsx?$': ['@swc/jest', {
+          jsc: {
+            parser: {
+              syntax: 'typescript',
+            },
+          },
+        }],
+      },
+    },
   ],
 };
