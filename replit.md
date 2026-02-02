@@ -40,7 +40,15 @@ Key backend features:
 - **Auth Storage**: Separate `authStorage` adapter in `server/replit_integrations/auth/storage.ts` handles Replit Auth user management
 - **Migrations**: Drizzle Kit configured for PostgreSQL migrations
 
-Database tables: users (auth), sessions (auth), contacts (contact form submissions).
+Database tables: users (auth), sessions (auth), contacts (contact form submissions), savedSows (user's saved SOW documents).
+
+### User Profile Feature
+- **Route**: `/profile` - User profile page displaying account info and SOW history
+- **SOW Storage**: Generated SOWs are automatically saved to user's profile
+- **API Endpoints**:
+  - `GET /api/user/sows` - Fetch user's saved SOWs
+  - `DELETE /api/user/sows/:id` - Delete a saved SOW
+- **Navigation**: Profile link in user dropdown (desktop and mobile)
 
 ### AI Integration
 - **Provider**: OpenAI via Replit AI Integrations
