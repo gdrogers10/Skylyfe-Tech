@@ -21,7 +21,7 @@ import { services } from "@/content/services";
 import { seoConfig } from "@/lib/seo";
 import { sowFormSchema, type SowFormData, type SowOutput } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn, Mail, Check, Rocket, Sparkles, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, Loader2, LogIn, Mail, Check, Rocket, Sparkles, Zap, User } from "lucide-react";
 
 const stepLabels = [
   { label: "Contact", description: "Your information" },
@@ -119,29 +119,6 @@ export default function Scope() {
 
   const [emailSent, setEmailSent] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
-
-  const downloadPdf = async () => {
-    try {
-      const response = await fetch("/api/sow/pdf", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ html: sowHtml }),
-      });
-      if (!response.ok) throw new Error("PDF generation failed");
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `SOW-${generatedSow?.projectTitle || "Project"}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      toast({ title: "PDF Downloaded", description: "Your SOW has been downloaded." });
-    } catch {
-      toast({ title: "Download failed", description: "Please try again.", variant: "destructive" });
-    }
-  };
 
   const sendEmail = async () => {
     setSendingEmail(true);
@@ -559,28 +536,22 @@ export default function Scope() {
                       <FileText className="h-6 w-6 text-primary" />
                       <h3 className="text-lg font-semibold">Your Statement of Work</h3>
                     </div>
-                    <div className="flex gap-2 flex-wrap">
-                      <Button onClick={downloadPdf} className="gap-2" data-testid="button-download-pdf">
-                        <Download className="h-4 w-4" />
-                        Download PDF
-                      </Button>
-                      <Button 
-                        onClick={sendEmail} 
-                        disabled={emailSent || sendingEmail}
-                        variant={emailSent ? "secondary" : "default"}
-                        className="gap-2" 
-                        data-testid="button-send-email"
-                      >
-                        {sendingEmail ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : emailSent ? (
-                          <Check className="h-4 w-4" />
-                        ) : (
-                          <Mail className="h-4 w-4" />
-                        )}
-                        {emailSent ? "Email Sent" : sendingEmail ? "Sending..." : "Send to Skylyfe"}
-                      </Button>
-                    </div>
+                    <Button 
+                      onClick={sendEmail} 
+                      disabled={emailSent || sendingEmail}
+                      variant={emailSent ? "secondary" : "default"}
+                      className="gap-2" 
+                      data-testid="button-send-email"
+                    >
+                      {sendingEmail ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : emailSent ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <Mail className="h-4 w-4" />
+                      )}
+                      {emailSent ? "Email Sent" : sendingEmail ? "Sending..." : "Send to Skylyfe"}
+                    </Button>
                   </CardHeader>
                   <CardContent>
                     <div
@@ -697,9 +668,9 @@ export default function Scope() {
               </li>
               <li className="flex items-center gap-3 p-3 rounded-lg bg-secondary/5 border border-secondary/10">
                 <div className="h-8 w-8 rounded-lg bg-secondary/10 flex items-center justify-center">
-                  <Download className="h-4 w-4 text-secondary" />
+                  <User className="h-4 w-4 text-secondary" />
                 </div>
-                <span>PDF export for your proposals</span>
+                <span>Save SOWs to your profile</span>
               </li>
               <li className="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
                 <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
