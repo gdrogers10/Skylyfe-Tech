@@ -21,7 +21,7 @@ import { services } from "@/content/services";
 import { seoConfig } from "@/lib/seo";
 import { sowFormSchema, type SowFormData, type SowOutput } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn, Mail, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, Download, Loader2, LogIn, Mail, Check, Rocket, Sparkles, Zap } from "lucide-react";
 
 const stepLabels = [
   { label: "Contact", description: "Your information" },
@@ -667,39 +667,59 @@ export default function Scope() {
 
   if (!isAuthenticated) {
     return (
-      <main id="main-content" className="bg-card min-h-screen flex items-center justify-center">
+      <main id="main-content" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+        <div className="absolute inset-0 cyber-grid opacity-30" />
+        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-primary/15 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-secondary/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        
         <SEO {...seoConfig.scope} />
-        <Card className="max-w-md w-full mx-4">
+        <Card className="relative max-w-md w-full mx-4 border-primary/20 shadow-[0_0_40px_hsla(187,100%,50%,0.1)]">
           <CardHeader className="text-center">
-            <FileText className="h-12 w-12 mx-auto text-primary mb-4" />
-            <h1 className="text-2xl font-semibold" data-testid="text-login-required">Sign In Required</h1>
+            <div className="h-16 w-16 mx-auto rounded-2xl gradient-primary flex items-center justify-center shadow-[0_0_25px_hsla(187,100%,50%,0.4)] mb-4">
+              <Rocket className="h-8 w-8 text-primary-foreground" />
+            </div>
+            <h1 className="text-2xl font-bold" data-testid="text-login-required">
+              Ready for <span className="gradient-text">Liftoff?</span>
+            </h1>
             <p className="text-muted-foreground mt-2">
-              Please sign in to access the SOW generator and create your custom Statement of Work.
+              Sign in to access the SOW generator and launch your project.
             </p>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Creating an account takes less than a minute and gives you access to:
-            </p>
-            <ul className="text-sm text-left space-y-2 ml-4">
-              <li className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-primary" />
-                AI-powered SOW generation
+          <CardContent className="text-center space-y-6">
+            <ul className="text-sm text-left space-y-3">
+              <li className="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                </div>
+                <span>AI-powered SOW generation</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Download className="h-4 w-4 text-primary" />
-                PDF export for your proposals
+              <li className="flex items-center gap-3 p-3 rounded-lg bg-secondary/5 border border-secondary/10">
+                <div className="h-8 w-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                  <Download className="h-4 w-4 text-secondary" />
+                </div>
+                <span>PDF export for your proposals</span>
+              </li>
+              <li className="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Zap className="h-4 w-4 text-primary" />
+                </div>
+                <span>Instant email delivery</span>
               </li>
             </ul>
             <Button
               onClick={() => { window.location.href = "/api/login"; }}
-              className="w-full gap-2"
+              className="w-full gap-2 gradient-primary hover:opacity-90 transition-all duration-300 hover-glow border-0"
               size="lg"
               data-testid="button-login"
             >
               <LogIn className="h-4 w-4" />
-              Sign In to Continue
+              Sign In to Launch
             </Button>
+            <p className="text-xs text-muted-foreground">
+              Takes less than 30 seconds to get started
+            </p>
           </CardContent>
         </Card>
       </main>
@@ -707,36 +727,65 @@ export default function Scope() {
   }
 
   return (
-    <main id="main-content" className="bg-card min-h-screen">
+    <main id="main-content" className="relative min-h-screen overflow-hidden">
+      {/* Background with subtle grid */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+      <div className="absolute inset-0 cyber-grid opacity-30" />
+      
+      {/* Floating orbs */}
+      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-secondary/10 rounded-full blur-3xl" />
+      
       <SEO {...seoConfig.scope} />
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="relative max-w-7xl mx-auto px-6 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-light dark:glass text-primary text-sm font-medium mb-4">
+            <Rocket className="w-4 h-4" />
+            SOW Generator
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight" data-testid="text-scope-page-title">
+            Launch Your <span className="gradient-text">Project</span>
+          </h1>
+          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+            Our AI-powered wizard helps you create a professional Statement of Work in minutes
+          </p>
+        </div>
+        
         <div className="flex flex-col lg:flex-row gap-8">
           <aside className="lg:w-80 lg:sticky lg:top-24 lg:self-start">
-            <Card>
-              <CardHeader>
-                <h1 className="text-xl font-semibold" data-testid="text-scope-title">Launch Your Project</h1>
-                <p className="text-sm text-muted-foreground">Generate a detailed Statement of Work</p>
+            <Card className="border-primary/10 shadow-[0_0_30px_hsla(187,100%,50%,0.05)]">
+              <CardHeader className="border-b border-primary/10">
+                <div className="flex items-center gap-2">
+                  <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center shadow-[0_0_15px_hsla(187,100%,50%,0.3)]">
+                    <Sparkles className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold" data-testid="text-scope-title">Mission Control</h2>
+                    <p className="text-xs text-muted-foreground">Track your progress</p>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 <Steps steps={stepLabels} currentStep={currentStep} onStepClick={setCurrentStep} />
               </CardContent>
             </Card>
           </aside>
 
           <div className="flex-1 min-w-0">
-            <Card>
+            <Card className="border-primary/10 shadow-[0_0_30px_hsla(187,100%,50%,0.05)]">
               <CardContent className="pt-6">
                 <Form {...form}>
                   <form className="space-y-8">
                     {renderStepContent()}
 
-                    <div className="flex items-center justify-between gap-4 pt-6 border-t">
+                    <div className="flex items-center justify-between gap-4 pt-6 border-t border-primary/10">
                       <Button
                         type="button"
                         variant="outline"
                         onClick={prevStep}
                         disabled={currentStep === 0}
-                        className="gap-2"
+                        className="gap-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5"
                         data-testid="button-prev-step"
                       >
                         <ArrowLeft className="h-4 w-4" />
@@ -746,7 +795,7 @@ export default function Scope() {
                         <Button
                           type="button"
                           onClick={nextStep}
-                          className="gap-2"
+                          className="gap-2 gradient-primary hover:opacity-90 transition-all duration-300 hover-glow border-0"
                           data-testid="button-next-step"
                         >
                           Continue
