@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Rocket, LogIn, LogOut, User } from "lucide-react";
+import { Menu, X, Rocket, LogIn, LogOut, User, FileText } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/content/site";
 import logoImage from "@assets/Skylyfe_Tech_1767155638633.png";
@@ -80,6 +80,12 @@ export function Nav() {
                     <User className="h-4 w-4 mr-2" />
                     {user.email || user.firstName || "User"}
                   </DropdownMenuItem>
+                  <Link href="/profile">
+                    <DropdownMenuItem data-testid="link-profile" className="cursor-pointer">
+                      <FileText className="h-4 w-4 mr-2" />
+                      My Profile
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem onClick={() => logout()} data-testid="button-logout" className="hover:bg-destructive/10 hover:text-destructive">
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
@@ -147,6 +153,16 @@ export function Nav() {
                     </Avatar>
                     <span className="text-sm text-muted-foreground">{user.email || user.firstName}</span>
                   </div>
+                  <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>
+                    <Button 
+                      variant="outline" 
+                      className="w-full gap-2 mb-2 border-primary/30 hover:border-primary/60 hover:bg-primary/5"
+                      data-testid="link-mobile-profile"
+                    >
+                      <FileText className="h-4 w-4" />
+                      My Profile
+                    </Button>
+                  </Link>
                   <Button 
                     variant="outline" 
                     className="w-full gap-2 border-destructive/30 hover:border-destructive/60 hover:bg-destructive/5 text-destructive" 
