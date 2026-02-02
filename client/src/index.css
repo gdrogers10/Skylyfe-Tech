@@ -412,3 +412,37 @@
     pointer-events: none;
   }
 }
+
+/* Accessibility: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-delayed {
+    animation: none;
+  }
+  
+  .animate-pulse-glow {
+    animation: none;
+  }
+  
+  .animate-gradient {
+    animation: none;
+  }
+  
+  .animate-shimmer {
+    animation: none;
+  }
+  
+  .animate-orbit {
+    animation: none;
+  }
+  
+  .scan-line::before {
+    animation: none;
+  }
+  
+  /* Keep static visual effects but remove motion */
+  .hover-glow:hover,
+  .hover-glow-secondary:hover {
+    transition: none;
+  }
+}

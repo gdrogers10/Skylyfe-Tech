@@ -712,7 +712,7 @@ export default function Scope() {
               onClick={() => { window.location.href = "/api/login"; }}
               className="w-full gap-2 gradient-primary hover:opacity-90 transition-all duration-300 hover-glow border-0"
               size="lg"
-              data-testid="button-login"
+              data-testid="button-scope-login"
             >
               <LogIn className="h-4 w-4" />
               Sign In to Launch
