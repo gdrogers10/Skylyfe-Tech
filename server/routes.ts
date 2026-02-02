@@ -103,7 +103,26 @@ export async function registerRoutes(
       const sow = await generateSow(parsed.data);
       const html = sanitizeSowHtml(renderSowHtml(sow));
 
-      res.json({ sow, html });
+      const user = (req as any).user;
+      let savedSowId: number | null = null;
+
+      if (user?.id) {
+        try {
+          const savedSow = await storage.createSavedSow({
+            userId: user.id,
+            projectTitle: sow.projectTitle,
+            clientName: sow.client.name,
+            clientEmail: sow.client.email,
+            clientOrganization: sow.client.organization || null,
+            sowData: sow,
+          });
+          savedSowId = savedSow.id;
+        } catch (saveError) {
+          console.error("Failed to save SOW to user profile:", saveError);
+        }
+      }
+
+      res.json({ sow, html, savedSowId });
     } catch (error) {
       console.error("SOW generation error:", error);
       res.status(500).json({ error: "Failed to generate SOW" });
@@ -166,6 +185,69 @@ export async function registerRoutes(
     } catch (error) {
       console.error("SOW email error:", error);
       res.status(500).json({ error: "Failed to send SOW email" });
+    }
+  });
+
+  app.get("/api/user/sows", isAuthenticated, async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+      if (!user?.id) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+
+      const sows = await storage.getSavedSowsByUser(user.id);
+      res.json(sows);
+    } catch (error) {
+      console.error("Failed to fetch user SOWs:", error);
+      res.status(500).json({ error: "Failed to fetch saved SOWs" });
+    }
+  });
+
+  app.get("/api/user/sows/:id", isAuthenticated, async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+      if (!user?.id) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+
+      const sowId = parseInt(req.params.id);
+      if (isNaN(sowId)) {
+        return res.status(400).json({ error: "Invalid SOW ID" });
+      }
+
+      const sow = await storage.getSavedSowById(sowId, user.id);
+      if (!sow) {
+        return res.status(404).json({ error: "SOW not found" });
+      }
+
+      res.json(sow);
+    } catch (error) {
+      console.error("Failed to fetch SOW:", error);
+      res.status(500).json({ error: "Failed to fetch SOW" });
+    }
+  });
+
+  app.delete("/api/user/sows/:id", isAuthenticated, async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+      if (!user?.id) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+
+      const sowId = parseInt(req.params.id);
+      if (isNaN(sowId)) {
+        return res.status(400).json({ error: "Invalid SOW ID" });
+      }
+
+      const deleted = await storage.deleteSavedSow(sowId, user.id);
+      if (!deleted) {
+        return res.status(404).json({ error: "SOW not found or already deleted" });
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Failed to delete SOW:", error);
+      res.status(500).json({ error: "Failed to delete SOW" });
     }
   });
 

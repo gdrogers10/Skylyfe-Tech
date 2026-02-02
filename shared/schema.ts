@@ -1,9 +1,28 @@
-import { pgTable, text, serial, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { sql } from "drizzle-orm";
 
 export * from "./models/auth";
+
+export const savedSows = pgTable("saved_sows", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  projectTitle: text("project_title").notNull(),
+  clientName: text("client_name").notNull(),
+  clientEmail: text("client_email").notNull(),
+  clientOrganization: text("client_organization"),
+  sowData: jsonb("sow_data").notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
+export const insertSavedSowSchema = createInsertSchema(savedSows).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertSavedSow = z.infer<typeof insertSavedSowSchema>;
+export type SavedSow = typeof savedSows.$inferSelect;
 
 export const contacts = pgTable("contacts", {
   id: serial("id").primaryKey(),
