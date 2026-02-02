@@ -65,7 +65,7 @@ export async function sendSOWNotification(data: SOWEmailData): Promise<boolean> 
     console.log(`[Email] PDF encoded, size: ${pdfBase64.length} chars`);
     
     const result = await client.emails.send({
-      from: fromEmail || 'noreply@resend.dev',
+      from: 'Skylyfe Tech <noreply@skylyfetech.com>',
       to: ['myskylyfe@gmail.com', 'g.rogersky@gmail.com'],
       subject: `New SOW Generated: ${data.projectName} - ${data.clientName}`,
       html: `
@@ -108,7 +108,7 @@ export async function sendContactNotification(data: ContactEmailData): Promise<b
     const { client, fromEmail } = await getResendClient();
     
     const result = await client.emails.send({
-      from: fromEmail || 'noreply@resend.dev',
+      from: 'Skylyfe Tech <noreply@skylyfetech.com>',
       to: ['myskylyfe@gmail.com', 'g.rogersky@gmail.com'],
       subject: `New Contact Form Submission from ${data.name}`,
       html: `
