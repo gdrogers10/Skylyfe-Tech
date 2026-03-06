@@ -114,3 +114,14 @@ export const sowOutputSchema = z.object({
 });
 
 export type SowOutput = z.infer<typeof sowOutputSchema>;
+
+export const scheduleFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Valid email is required"),
+  date: z.string().min(1, "Date is required"),
+  time: z.string().min(1, "Time is required"),
+  service: z.string().min(1, "Please select a service"),
+  message: z.string().optional(),
+});
+
+export type ScheduleFormData = z.infer<typeof scheduleFormSchema>;

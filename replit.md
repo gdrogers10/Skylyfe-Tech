@@ -2,9 +2,9 @@
 
 ## Overview
 
-Skylyfe Tech is a production-ready marketing and lead generation web application for Skylyfe Technologies LLC. The platform showcases emerging technology services (AI/ML, Spatial/AR, 3D printing, IoT/GPS, e-commerce) and includes a sophisticated SOW (Statement of Work) generator that uses OpenAI to create professional project scopes with PDF export capabilities.
+Skylyfe Tech is a production-ready marketing and lead generation web application for Skylyfe Technologies LLC. The platform showcases emerging technology services (AI/ML, Spatial/AR, 3D printing, IoT/GPS, e-commerce) and includes a sophisticated SOW (Statement of Work) generator that uses OpenAI to create professional project scopes saved to user profiles.
 
-The application is designed as a conversion-focused B2B tech website with clear service presentations, case studies, and a multi-step scoping wizard that guides potential clients through project definition.
+The application is designed as a conversion-focused B2B tech website with clear service presentations, case studies, a multi-step scoping wizard, and a Google Calendar scheduling feature for client consultations.
 
 ## User Preferences
 
@@ -27,11 +27,13 @@ The frontend follows a page-based structure under `client/src/pages/` with share
 - **Language**: TypeScript (ES modules)
 - **API Pattern**: RESTful endpoints under `/api/`
 - **PDF Generation**: Puppeteer (headless Chromium) for server-side HTML to PDF rendering
+- **Google Calendar**: Integration via Replit Connectors for scheduling client consultations
 
 Key backend features:
 - Contact form submission with optional webhook forwarding
 - SOW generation using OpenAI's structured JSON output
 - PDF export of generated SOWs
+- Google Calendar event creation for client meeting scheduling
 
 ### Data Storage
 - **ORM**: Drizzle ORM with PostgreSQL dialect
@@ -49,6 +51,14 @@ Database tables: users (auth), sessions (auth), contacts (contact form submissio
   - `GET /api/user/sows` - Fetch user's saved SOWs
   - `DELETE /api/user/sows/:id` - Delete a saved SOW
 - **Navigation**: Profile link in user dropdown (desktop and mobile)
+
+### Google Calendar Scheduling
+- **Route**: `/schedule` - Meeting scheduling page for potential clients
+- **Integration**: Google Calendar via Replit Connectors (`server/replit_integrations/googleCalendar.ts`)
+- **API Endpoint**: `POST /api/schedule` - Creates a Google Calendar event (30-min consultation)
+- **Fields**: Name, email, service of interest, preferred date, time slot (EST), optional message
+- **Features**: Auto-sends calendar invites to client's email, rate limited (5 per 15 min per IP)
+- **No Auth Required**: Open to all visitors (potential clients may not have accounts)
 
 ### AI Integration
 - **Provider**: OpenAI via Replit AI Integrations

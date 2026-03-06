@@ -17,6 +17,7 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Legal from "@/pages/Legal";
 import Profile from "@/pages/Profile";
+import Schedule from "@/pages/Schedule";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/services/:slug" component={ServiceDetail} />
       <Route path="/scope" component={Scope} />
       <Route path="/profile" component={Profile} />
+      <Route path="/schedule" component={Schedule} />
       <Route path="/work" component={Work} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />

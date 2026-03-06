@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Rocket, LogIn, LogOut, User, FileText } from "lucide-react";
+import { Menu, X, Rocket, LogIn, LogOut, User, FileText, CalendarDays } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/content/site";
 import logoImage from "@assets/Skylyfe_Tech_1767155638633.png";
@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 const navLinks = [
   { label: "Services", href: "/services" },
+  { label: "Schedule", href: "/schedule" },
   { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },

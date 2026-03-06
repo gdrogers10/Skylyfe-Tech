@@ -2,11 +2,12 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import { storage } from "./storage";
-import { insertContactSchema, sowFormSchema } from "@shared/schema";
+import { insertContactSchema, sowFormSchema, scheduleFormSchema } from "@shared/schema";
 import { generateSow, renderSowHtml, sanitizeSowHtml } from "./sow";
 import { generatePdf } from "./pdf";
 import { sendSOWNotification, sendContactNotification } from "./email";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
+import { getUncachableGoogleCalendarClient } from "./replit_integrations/googleCalendar";
 
 function escapeHtml(text: string): string {
   const map: Record<string, string> = {
@@ -251,6 +252,78 @@ export async function registerRoutes(
     }
   });
 
+  const scheduleLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    message: { error: "Too many scheduling requests, please try again later" },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  app.post("/api/schedule", scheduleLimiter, async (req: Request, res: Response) => {
+    try {
+      const parsed = scheduleFormSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid scheduling data", details: parsed.error.errors });
+      }
+
+      const { name, email, date, time, service, message } = parsed.data;
+
+      const timeMatch = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (!timeMatch) {
+        return res.status(400).json({ error: "Invalid time format" });
+      }
+
+      let hours = parseInt(timeMatch[1]);
+      const minutes = parseInt(timeMatch[2]);
+      const ampm = timeMatch[3].toUpperCase();
+
+      if (ampm === "PM" && hours !== 12) hours += 12;
+      if (ampm === "AM" && hours === 12) hours = 0;
+
+      const startDateTime = new Date(`${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`);
+      const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
+
+      if (isNaN(startDateTime.getTime())) {
+        return res.status(400).json({ error: "Invalid date or time" });
+      }
+
+      const calendar = await getUncachableGoogleCalendarClient();
+
+      const event = {
+        summary: `Skylyfe Consultation: ${escapeHtml(service)} - ${escapeHtml(name)}`,
+        description: [
+          `Client: ${escapeHtml(name)}`,
+          `Email: ${escapeHtml(email)}`,
+          `Service: ${escapeHtml(service)}`,
+          message ? `\nNotes: ${escapeHtml(message)}` : '',
+        ].filter(Boolean).join('\n'),
+        start: {
+          dateTime: startDateTime.toISOString(),
+          timeZone: 'America/New_York',
+        },
+        end: {
+          dateTime: endDateTime.toISOString(),
+          timeZone: 'America/New_York',
+        },
+        attendees: [
+          { email: email },
+        ],
+      };
+
+      await calendar.events.insert({
+        calendarId: 'primary',
+        requestBody: event,
+        sendUpdates: 'all',
+      });
+
+      res.status(201).json({ success: true, message: "Meeting scheduled successfully" });
+    } catch (error) {
+      console.error("Scheduling error:", error);
+      res.status(500).json({ error: "Failed to schedule meeting. Please try again." });
+    }
+  });
+
   app.get("/robots.txt", (req: Request, res: Response) => {
     const robotsTxt = `User-agent: *
 Allow: /
@@ -277,6 +350,7 @@ Sitemap: https://skylyfe.tech/sitemap.xml
       { loc: "/", priority: "1.0", changefreq: "weekly" },
       { loc: "/services", priority: "0.9", changefreq: "weekly" },
       { loc: "/scope", priority: "0.9", changefreq: "weekly" },
+      { loc: "/schedule", priority: "0.8", changefreq: "weekly" },
       { loc: "/work", priority: "0.8", changefreq: "monthly" },
       { loc: "/about", priority: "0.7", changefreq: "monthly" },
       { loc: "/contact", priority: "0.7", changefreq: "monthly" },
